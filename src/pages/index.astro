@@ -43,38 +43,72 @@ const latest = postsByDate.slice(0, 3);
   title={`TMJ & Jaw Pain Specialist in Makati | ${site.name}`}
   description="Jaw pain, clicking, headaches or ear pain no one can explain? DBU Dental Care, Makati specialises in TMJ. 15-minute screening, Php 3,800."
   schema={[faqSchema, screeningSchema]}
+  darkHero
 >
   <!-- ==================== HERO ==================== -->
-  <section class="relative overflow-hidden bg-paper-warm">
-    <div
-      class="pointer-events-none absolute -left-40 top-10 h-[38rem] w-[38rem] rounded-full bg-gold-500/12 blur-[120px]"
-      aria-hidden="true"
-    >
-    </div>
-    <div
-      class="pointer-events-none absolute -right-32 bottom-0 h-[30rem] w-[30rem] rounded-full bg-ox-600/[0.07] blur-[110px]"
-      aria-hidden="true"
-    >
+  <section class="relative isolate overflow-hidden bg-ink text-paper">
+    <!-- Photographic ground. Bleeds off the right on desktop; on phones it sits
+         behind everything with a heavier scrim so the type still carries. -->
+    <div class="absolute inset-0 lg:left-auto lg:w-[54%]" aria-hidden="true">
+      <img
+        src="/photos/profile-hero-tall-1600.webp"
+        srcset="/photos/profile-hero-tall-900.webp 900w, /photos/profile-hero-tall-1600.webp 1600w"
+        sizes="(min-width: 1024px) 54vw, 100vw"
+        alt=""
+        width="1600"
+        height="2400"
+        fetchpriority="high"
+        decoding="async"
+        class="h-full w-full object-cover object-[62%_28%] opacity-70 lg:opacity-100"
+        style="filter:grayscale(1) contrast(1.12) brightness(0.82)"
+      />
+
+      <!-- Scrims: vertical on mobile, horizontal into the copy on desktop -->
+      <div class="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/60 to-ink lg:hidden"></div>
+      <div class="absolute inset-0 hidden bg-gradient-to-r from-ink via-ink/55 to-transparent lg:block"></div>
+      <div class="absolute inset-x-0 bottom-0 hidden h-40 bg-gradient-to-t from-ink to-transparent lg:block"></div>
     </div>
 
-    <div class="wrap-wide relative grid items-center gap-14 pb-24 pt-16 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16 lg:pb-32 lg:pt-24">
-      <div>
-        <span class="eyebrow" data-reveal>
-          <span class="h-px w-8 bg-gold-500"></span>
+    <!-- The logo's target rings, landed on the actual jaw joint -->
+    <div
+      class="pointer-events-none absolute hidden lg:block"
+      style="left:70%; top:44%"
+      aria-hidden="true"
+    >
+      <span class="ring-pulse relative block h-24 w-24">
+        <span class="absolute inset-0 rounded-full border border-signal/70"></span>
+        <span class="absolute inset-0 rounded-full border border-signal/70"></span>
+        <span class="absolute inset-0 rounded-full border border-signal/70"></span>
+      </span>
+      <span
+        class="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal"
+      ></span>
+      <span
+        class="absolute left-[calc(50%+3.6rem)] top-1/2 w-40 -translate-y-1/2 border-l border-signal/40 pl-3
+               text-[0.68rem] uppercase tracking-[0.16em] leading-relaxed text-paper/60"
+      >
+        Temporomandibular joint
+      </span>
+    </div>
+
+    <div class="wrap-wide relative flex min-h-[42rem] flex-col justify-center py-24 lg:min-h-[46rem] lg:py-28">
+      <div class="max-w-[38rem] lg:max-w-[44rem]">
+        <span class="eyebrow !text-gold-400" data-reveal>
+          <span class="h-px w-10 bg-gold-500"></span>
           {site.positioning}
         </span>
 
         <h1
-          class="mt-7 text-[3.1rem] leading-[0.98] sm:text-7xl lg:text-[5.6rem]"
+          class="mt-8 text-[3.1rem] leading-[0.94] tracking-[-0.03em] text-paper sm:text-[4.4rem] lg:text-[5.5rem]"
           data-reveal
           style="--reveal-delay:60ms"
         >
-          You don't have to<br class="hidden sm:block" />
-          <span class="italic text-gold-600">live with</span> TMJ pain.
+          You don't have to<br />
+          <span class="italic text-gold-400">live with</span> TMJ pain.
         </h1>
 
         <p
-          class="mt-8 max-w-xl text-lg leading-relaxed text-ink-soft sm:text-xl"
+          class="mt-9 max-w-lg text-lg leading-relaxed text-paper/70 sm:text-xl"
           data-reveal
           style="--reveal-delay:140ms"
         >
@@ -82,69 +116,46 @@ const latest = postsByDate.slice(0, 3);
           of life - from a Makati clinic where the jaw joint is the specialty, not a sideline.
         </p>
 
-        <div class="mt-10 flex flex-wrap items-center gap-4" data-reveal style="--reveal-delay:220ms">
-          <BookLink class="btn-primary" data-magnetic="0.2">
+        <div class="mt-11 flex flex-wrap items-center gap-4" data-reveal style="--reveal-delay:220ms">
+          <BookLink class="btn-gold" data-magnetic="0.2">
             Book a TMJ Screening
-            <span class="text-paper/55">- {site.screening.priceDisplay}</span>
+            <span class="text-white/70">- {site.screening.priceDisplay}</span>
           </BookLink>
-          <a href="#self-check" class="btn-ghost">Take the 1-minute self-check</a>
+          <a href="#self-check" class="btn-ghost-light">Take the 1-minute self-check</a>
         </div>
 
         <dl
-          class="mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-ink/10 pt-8"
+          class="mt-16 grid max-w-xl grid-cols-3 gap-8 border-t border-paper/15 pt-9"
           data-reveal
           style="--reveal-delay:300ms"
         >
           <div>
-            <dt class="text-[0.72rem] uppercase tracking-[0.14em] text-ink-mute">Program</dt>
-            <dd class="mt-1.5 font-display text-3xl text-ox-600">{doctor.yearsCurating} yrs</dd>
-            <dd class="text-[0.8rem] text-ink-mute">in the making</dd>
+            <dt class="text-[0.68rem] uppercase tracking-[0.16em] text-paper/45">Program</dt>
+            <dd class="mt-2 font-display text-3xl text-gold-400 sm:text-4xl">
+              {doctor.yearsCurating} yrs
+            </dd>
+            <dd class="mt-0.5 text-[0.82rem] text-paper/55">in the making</dd>
           </div>
           <div>
-            <dt class="text-[0.72rem] uppercase tracking-[0.14em] text-ink-mute">Screening</dt>
-            <dd class="mt-1.5 font-display text-3xl text-ox-600">15 min</dd>
-            <dd class="text-[0.8rem] text-ink-mute">structured diagnostic</dd>
+            <dt class="text-[0.68rem] uppercase tracking-[0.16em] text-paper/45">Screening</dt>
+            <dd class="mt-2 font-display text-3xl text-gold-400 sm:text-4xl">15 min</dd>
+            <dd class="mt-0.5 text-[0.82rem] text-paper/55">structured diagnostic</dd>
           </div>
           <div>
-            <dt class="text-[0.72rem] uppercase tracking-[0.14em] text-ink-mute">Treatment</dt>
-            <dd class="mt-1.5 font-display text-3xl text-ox-600">Non-<wbr />surgical</dd>
-            <dd class="text-[0.8rem] text-ink-mute">and personalised</dd>
+            <dt class="text-[0.68rem] uppercase tracking-[0.16em] text-paper/45">Treatment</dt>
+            <dd class="mt-2 font-display text-3xl text-gold-400 sm:text-4xl">Non-surgical</dd>
+            <dd class="mt-0.5 text-[0.82rem] text-paper/55">and personalised</dd>
           </div>
         </dl>
       </div>
-
-      <!-- Profile photo with the brand mark floated over it -->
-      <div class="relative hidden lg:block" data-reveal style="--reveal-delay:180ms">
-        <Photo
-          src="/photos/profile-hero"
-          alt="A woman photographed in profile, her jaw and cheekbone lit from the side"
-          ratio="4/5"
-          tone="cool"
-          sizes="(min-width: 1024px) 34vw, 100vw"
-          loading="eager"
-          fetchpriority="high"
-          mark
-        />
-
-        <div
-          class="absolute -bottom-10 -left-12 w-[15.5rem] rounded-[1.5rem] border border-ink/[0.07]
-                 bg-paper/95 p-6 shadow-[0_28px_60px_-28px_rgba(28,22,19,0.5)] backdrop-blur-md"
-        >
-          <img src="/brand/dbu-logo.png" alt="" width="3197" height="1972" class="w-full" />
-          <p class="mt-4 border-t border-ink/10 pt-4 text-[0.78rem] leading-relaxed text-ink-mute">
-            The mark holds a head in profile, with the pain radiating from a single point - the
-            temporomandibular joint.
-          </p>
-        </div>
-      </div>
     </div>
 
-    <!-- Symptom marquee -->
-    <div class="relative overflow-hidden border-y border-ink/[0.07] bg-paper py-4">
+    <!-- Symptom marquee, sitting on the dark -->
+    <div class="relative overflow-hidden border-t border-paper/10 bg-ink py-4">
       <div class="marquee-track flex w-max gap-3">
         {
           [...symptoms, ...symptoms].map((s) => (
-            <span class="flex shrink-0 items-center gap-3 rounded-full border border-ink/[0.09] bg-white/60 px-5 py-2 text-[0.85rem] text-ink-soft">
+            <span class="flex shrink-0 items-center gap-3 rounded-full border border-paper/15 px-5 py-2 text-[0.85rem] text-paper/70">
               <span class="h-1.5 w-1.5 rounded-full bg-signal" aria-hidden="true" />
               {s.short}
             </span>

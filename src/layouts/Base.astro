@@ -17,6 +17,8 @@ interface Props {
   schema?: Record<string, unknown>[];
   noindex?: boolean;
   ogType?: 'website' | 'article';
+  /** Set on pages whose hero is dark, so the header inverts until scrolled. */
+  darkHero?: boolean;
 }
 
 const {
@@ -26,6 +28,7 @@ const {
   schema = [],
   noindex = false,
   ogType = 'website',
+  darkHero = false,
 } = Astro.props;
 
 const canonicalURL = new URL(canonical ?? Astro.url.pathname, Astro.site);
@@ -163,7 +166,7 @@ const graph = {
       Skip to content
     </a>
 
-    <Header />
+    <Header darkHero={darkHero} />
     <main id="main">
       <slot />
     </main>

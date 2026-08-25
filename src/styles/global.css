@@ -121,6 +121,31 @@
   .rule { @apply h-px w-full bg-ink/10; }
 }
 
+/* ---- Header inverted over a dark hero ----
+   Only until the page scrolls, at which point the header goes solid paper and
+   the normal dark-on-light styling takes back over. The gold logo reads on
+   both grounds, so it needs no treatment. */
+header[data-over-dark]:not(.is-scrolled) {
+  background: var(--color-ink);
+}
+header[data-over-dark]:not(.is-scrolled) .nav-link {
+  color: rgb(247 244 238 / 0.78);
+}
+header[data-over-dark]:not(.is-scrolled) .nav-link:hover,
+header[data-over-dark]:not(.is-scrolled) .nav-link[aria-current='page'] {
+  color: var(--color-gold-400);
+}
+header[data-over-dark]:not(.is-scrolled) .hdr-phone {
+  color: rgb(247 244 238 / 0.78);
+}
+header[data-over-dark]:not(.is-scrolled) .hdr-phone:hover {
+  color: var(--color-gold-400);
+}
+header[data-over-dark]:not(.is-scrolled) .hdr-menu {
+  color: var(--color-paper);
+  border-color: rgb(247 244 238 / 0.3);
+}
+
 /* ---- Scroll reveal ---- */
 [data-reveal] {
   opacity: 0;
