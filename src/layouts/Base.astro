@@ -1,5 +1,6 @@
 ---
-import '@fontsource-variable/fraunces';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
 import '@fontsource-variable/inter';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
@@ -98,9 +99,70 @@ const websiteNode = {
   inLanguage: 'en-PH',
 };
 
+/* ---- Per-page WebPage + breadcrumbs -------------------------------------
+   Every URL gets a WebPage node tying it back to the clinic entity, and a
+   breadcrumb trail derived from the path. Without these, search engines and
+   assistants see a pile of pages with no stated relationship to the business. */
+
+const segmentLabels: Record<string, string> = {
+  'tmj-dysfunction': 'TMJ Dysfunction',
+  'tmj-self-check': 'TMJ Self-Check',
+  'tmj-pain-management-program': 'TMJ Pain Management Program',
+  'dental-services': 'Dental Services',
+  'the-jaw-talk': 'The Jaw Talk',
+  about: 'About',
+  contact: 'Contact',
+  book: 'Book a Screening',
+  'privacy-policy': 'Privacy Policy',
+  terms: 'Terms of Use',
+};
+
+const titleCase = (slug: string) =>
+  slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+const segments = canonicalURL.pathname.split('/').filter(Boolean);
+
+const breadcrumbNode = {
+  '@type': 'BreadcrumbList',
+  '@id': `${canonicalURL.href.replace(/\/$/, '')}/#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+    ...segments.map((seg, i) => ({
+      '@type': 'ListItem',
+      position: i + 2,
+      name: segmentLabels[seg] ?? titleCase(seg),
+      ...(i < segments.length - 1
+        ? { item: `${site.url}/${segments.slice(0, i + 1).join('/')}` }
+        : {}),
+    })),
+  ],
+};
+
+const webPageNode = {
+  '@type': 'WebPage',
+  '@id': `${canonicalURL.href.replace(/\/$/, '')}/#webpage`,
+  url: canonicalURL.href,
+  name: fullTitle,
+  description,
+  isPartOf: { '@id': `${site.url}/#website` },
+  about: { '@id': clinicId },
+  primaryImageOfPage: { '@type': 'ImageObject', url: ogImage.href },
+  inLanguage: 'en-PH',
+  ...(segments.length ? { breadcrumb: { '@id': breadcrumbNode['@id'] } } : {}),
+};
+
+/* Pages that already publish their own breadcrumbs keep theirs. */
+const hasOwnBreadcrumb = schema.some((n) => n['@type'] === 'BreadcrumbList');
+
 const graph = {
   '@context': 'https://schema.org',
-  '@graph': [clinicNode, websiteNode, ...schema],
+  '@graph': [
+    clinicNode,
+    websiteNode,
+    webPageNode,
+    ...(segments.length && !hasOwnBreadcrumb ? [breadcrumbNode] : []),
+    ...schema,
+  ],
 };
 ---
 
