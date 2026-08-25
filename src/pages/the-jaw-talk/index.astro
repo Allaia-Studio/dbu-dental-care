@@ -1,0 +1,107 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import ClosingCTA from '../../components/ClosingCTA.astro';
+import { postsByDate } from '../../data/posts';
+import { site } from '../../data/site';
+
+const blogSchema = {
+  '@type': 'Blog',
+  '@id': `${site.url}/the-jaw-talk#blog`,
+  name: 'The Jaw Talk',
+  description: 'Plain-language articles about TMJ Dysfunction from DBU Dental Care, Makati.',
+  publisher: { '@id': `${site.url}/#clinic` },
+  blogPost: postsByDate.map((p) => ({
+    '@type': 'BlogPosting',
+    headline: p.title,
+    description: p.excerpt,
+    datePublished: p.published,
+    url: `${site.url}/the-jaw-talk/${p.slug}`,
+  })),
+};
+
+const [lead, ...rest] = postsByDate;
+---
+
+<Base
+  title="The Jaw Talk - TMJ Articles"
+  description="Plain-language articles on TMJ Dysfunction: what the joint is, why jaw problems cause headaches and ear pain, grinding vs clenching, and living with TMD."
+  schema={[blogSchema]}
+>
+  <PageHero
+    eyebrow="The Jaw Talk"
+    title="Plain answers about your jaw."
+    lede="The explanations patients tell us they wish someone had given them years earlier."
+  />
+
+  <section class="wrap py-24 sm:py-32">
+    <!-- Lead article -->
+    <a
+      href={`/the-jaw-talk/${lead.slug}`}
+      class="card-hover group grid gap-10 p-9 sm:p-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16"
+      data-reveal
+    >
+      <div>
+        <span class="eyebrow !text-gold-600">{lead.category} · Latest</span>
+        <h2 class="mt-5 text-4xl transition-colors duration-300 group-hover:text-ox-600 sm:text-5xl">
+          {lead.title}
+        </h2>
+        <p class="mt-6 max-w-xl text-[1.08rem] leading-relaxed text-ink-soft">{lead.excerpt}</p>
+        <span class="mt-8 inline-flex items-center gap-3 text-[0.9rem] font-medium text-ox-600">
+          Read the article
+          <span
+            class="flex h-8 w-8 items-center justify-center rounded-full border border-ox-600/25 transition-all duration-300 group-hover:bg-ox-600 group-hover:text-paper"
+            aria-hidden="true"
+          >
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+              <path
+                d="M1 13L13 1M13 1H4M13 1v9"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </span>
+        </span>
+      </div>
+
+      <div class="flex flex-col justify-end border-t border-ink/10 pt-6 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+        <dl class="space-y-4 text-[0.9rem]">
+          <div>
+            <dt class="text-ink-mute">Reading time</dt>
+            <dd class="font-display text-2xl text-ink">{lead.readingMinutes} min</dd>
+          </div>
+          <div>
+            <dt class="text-ink-mute">Category</dt>
+            <dd class="text-ink">{lead.category}</dd>
+          </div>
+        </dl>
+      </div>
+    </a>
+
+    <!-- Rest -->
+    <div class="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {
+        rest.map((post, i) => (
+          <a
+            href={`/the-jaw-talk/${post.slug}`}
+            class="card-hover group flex flex-col p-8"
+            data-reveal
+            style={`--reveal-delay:${(i % 3) * 70}ms`}
+          >
+            <span class="eyebrow !text-gold-600">{post.category}</span>
+            <h2 class="mt-4 text-2xl transition-colors duration-300 group-hover:text-ox-600">
+              {post.title}
+            </h2>
+            <p class="mt-4 flex-1 leading-relaxed text-ink-soft">{post.excerpt}</p>
+            <span class="mt-7 border-t border-ink/[0.09] pt-5 text-[0.82rem] text-ink-mute">
+              {post.readingMinutes} min read
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <ClosingCTA />
+</Base>

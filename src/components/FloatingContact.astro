@@ -1,0 +1,235 @@
+---
+import { site } from '../data/site';
+
+/**
+ * Two patterns, one component:
+ *  - desktop: an expanding FAB stack, bottom-right
+ *  - mobile:  a fixed bottom action bar, because in PH the tap-to-chat path
+ *             (Messenger / WhatsApp) converts far harder than a form
+ *
+ * Body gets bottom padding on mobile via the spacer so the bar never covers
+ * the footer's last row.
+ */
+
+const channels = [
+  {
+    key: 'messenger',
+    label: 'Messenger',
+    sub: 'Chat with the clinic',
+    href: site.contact.messengerHref,
+    brand: '#0084FF',
+    icon: 'messenger',
+  },
+  {
+    key: 'whatsapp',
+    label: 'WhatsApp',
+    sub: site.contact.mobile,
+    href: site.contact.whatsappHref,
+    brand: '#25D366',
+    icon: 'whatsapp',
+  },
+  {
+    key: 'call',
+    label: 'Call the clinic',
+    sub: site.contact.mobile,
+    href: site.contact.mobileHref,
+    brand: '#5B0F00',
+    icon: 'phone',
+  },
+  {
+    key: 'book',
+    label: 'Book a Screening',
+    sub: site.screening.priceDisplay,
+    href: '/book',
+    brand: '#AD9952',
+    icon: 'calendar',
+  },
+] as const;
+---
+
+<!-- ============ Desktop: expanding FAB ============ -->
+<div class="pointer-events-none fixed bottom-6 right-6 z-40 hidden flex-col items-end gap-3 md:flex">
+  <div
+    data-fab-panel
+    hidden
+    class="pointer-events-auto flex w-[19rem] flex-col gap-1.5 rounded-3xl border border-ink/10
+           bg-paper/95 p-2.5 shadow-[0_28px_70px_-24px_rgba(28,22,19,0.45)] backdrop-blur-xl"
+  >
+    <p class="px-3 pb-1 pt-2 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-ink-mute">
+      Talk to us
+    </p>
+
+    {
+      channels.map((c) => (
+        <a
+          href={c.href}
+          target={c.href.startsWith('http') ? '_blank' : undefined}
+          rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+          class="group flex items-center gap-3.5 rounded-2xl px-3 py-2.5 transition-colors duration-300 hover:bg-ink/[0.045]"
+        >
+          <span
+            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white transition-transform duration-300 group-hover:scale-105"
+            style={`background:${c.brand}`}
+            aria-hidden="true"
+          >
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
+              {c.icon === 'messenger' && (
+                <path d="M12 2C6.3 2 2 6.2 2 11.7c0 3.1 1.4 5.9 3.7 7.7v3.8l3.4-1.9c.9.3 1.9.4 2.9.4 5.7 0 10-4.2 10-9.7S17.7 2 12 2zm1 13.1-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7-5.4 5.8z" />
+              )}
+              {c.icon === 'whatsapp' && (
+                <path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z" />
+              )}
+              {c.icon === 'phone' && (
+                <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z" />
+              )}
+              {c.icon === 'calendar' && (
+                <path d="M7 2v2h10V2h2v2h2a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h2V2h2zm13 8H4v10h16V10z" />
+              )}
+            </svg>
+          </span>
+          <span class="min-w-0">
+            <span class="block text-[0.9rem] font-medium leading-tight text-ink">{c.label}</span>
+            <span class="block truncate text-[0.78rem] text-ink-mute">{c.sub}</span>
+          </span>
+        </a>
+      ))
+    }
+
+    <p class="px-3 pb-1.5 pt-1 text-[0.72rem] leading-relaxed text-ink-mute">
+      Mon–Fri, 10:00 am – 7:00 pm. Messages outside clinic hours are answered the next working day.
+    </p>
+  </div>
+
+  <button
+    type="button"
+    data-fab-toggle
+    aria-expanded="false"
+    aria-controls="contact-fab-panel"
+    class="pointer-events-auto group relative flex h-15 items-center gap-3 rounded-full bg-ox-600 px-6 py-4
+           text-paper shadow-[0_18px_44px_-14px_rgba(91,15,0,0.7)] transition-all duration-300
+           hover:-translate-y-0.5 hover:bg-ox-500"
+  >
+    <!-- The logo's pain-target rings, reused as a live pulse -->
+    <span class="ring-pulse pointer-events-none absolute inset-0" aria-hidden="true">
+      <span class="absolute inset-0 rounded-full border border-gold-500/60"></span>
+      <span class="absolute inset-0 rounded-full border border-gold-500/60"></span>
+      <span class="absolute inset-0 rounded-full border border-gold-500/60"></span>
+    </span>
+
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      class="relative transition-transform duration-300 group-[[aria-expanded=true]]:rotate-90"
+      data-fab-icon
+    >
+      <path
+        d="M12 2C6.5 2 2 6 2 11c0 2.6 1.3 5 3.3 6.6L4.6 22l4.3-2.2c1 .2 2 .3 3.1.3 5.5 0 10-4 10-9s-4.5-9-10-9z"
+      ></path>
+    </svg>
+    <span class="relative text-[0.9rem] font-medium" data-fab-label>Talk to us</span>
+  </button>
+</div>
+
+<!-- ============ Mobile: bottom action bar ============ -->
+<div
+  class="fixed bottom-0 left-0 right-0 z-40 border-t border-ink/10 bg-paper/95 backdrop-blur-xl
+         shadow-[0_-8px_30px_-16px_rgba(28,22,19,0.4)] md:hidden"
+  style="padding-bottom:env(safe-area-inset-bottom,0px)"
+>
+  <div class="grid grid-cols-4">
+    <a
+      href={site.contact.messengerHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex flex-col items-center gap-1 py-2.5 text-[0.65rem] font-medium text-ink-soft transition-colors active:bg-ink/5"
+    >
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="#0084FF" aria-hidden="true">
+        <path
+          d="M12 2C6.3 2 2 6.2 2 11.7c0 3.1 1.4 5.9 3.7 7.7v3.8l3.4-1.9c.9.3 1.9.4 2.9.4 5.7 0 10-4.2 10-9.7S17.7 2 12 2zm1 13.1-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7-5.4 5.8z"
+        ></path>
+      </svg>
+      Messenger
+    </a>
+
+    <a
+      href={site.contact.whatsappHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex flex-col items-center gap-1 py-2.5 text-[0.65rem] font-medium text-ink-soft transition-colors active:bg-ink/5"
+    >
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true">
+        <path
+          d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"
+        ></path>
+      </svg>
+      WhatsApp
+    </a>
+
+    <a
+      href={site.contact.mobileHref}
+      class="flex flex-col items-center gap-1 py-2.5 text-[0.65rem] font-medium text-ink-soft transition-colors active:bg-ink/5"
+    >
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="#5B0F00" aria-hidden="true">
+        <path
+          d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"
+        ></path>
+      </svg>
+      Call
+    </a>
+
+    <a
+      href="/book"
+      class="flex flex-col items-center gap-1 bg-ox-600 py-2.5 text-[0.65rem] font-medium text-paper transition-colors active:bg-ox-500"
+    >
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="#AD9952" aria-hidden="true">
+        <path
+          d="M7 2v2h10V2h2v2h2a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h2V2h2zm13 8H4v10h16V10z"
+        ></path>
+      </svg>
+      Book
+    </a>
+  </div>
+</div>
+
+<!-- Keeps the mobile bar from sitting on top of footer content -->
+<div
+  class="md:hidden"
+  style="height:calc(4.25rem + env(safe-area-inset-bottom,0px))"
+  aria-hidden="true"
+>
+</div>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-fab-toggle]');
+  const panel = document.querySelector<HTMLElement>('[data-fab-panel]');
+  const label = document.querySelector<HTMLElement>('[data-fab-label]');
+
+  if (toggle && panel && label) {
+    panel.id = 'contact-fab-panel';
+
+    const setOpen = (open: boolean) => {
+      panel.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? 'Close' : 'Talk to us';
+    };
+
+    // `hidden` is typed boolean | string (for hidden="until-found"), so coerce.
+    toggle.addEventListener('click', () => setOpen(Boolean(panel.hidden)));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.hidden) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (panel.hidden) return;
+      const t = e.target as Node;
+      if (!panel.contains(t) && !toggle.contains(t)) setOpen(false);
+    });
+  }
+</script>

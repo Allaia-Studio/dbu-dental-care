@@ -1,0 +1,57 @@
+---
+import type { Faq } from '../data/faqs';
+
+interface Props {
+  items: readonly Faq[];
+  heading?: string;
+}
+
+const { items, heading = 'Questions patients ask first' } = Astro.props;
+---
+
+<section class="wrap py-24 sm:py-32" aria-labelledby="faq-heading">
+  <div class="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+    <div class="lg:sticky lg:top-28 lg:self-start" data-reveal>
+      <span class="eyebrow">
+        <span class="h-px w-8 bg-gold-500"></span>
+        FAQ
+      </span>
+      <h2 id="faq-heading" class="mt-6 text-4xl sm:text-5xl">{heading}</h2>
+      <p class="mt-6 max-w-sm leading-relaxed text-ink-soft">
+        If yours is not here, message the clinic directly - someone from the team will answer.
+      </p>
+    </div>
+
+    <div class="divide-y divide-ink/10 border-y border-ink/10" data-reveal style="--reveal-delay:100ms">
+      {
+        items.map((f) => (
+          <details name="faq" class="group py-1">
+            <summary
+              class="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-left
+                     text-[1.06rem] font-medium text-ink transition-colors hover:text-ox-600
+                     [&::-webkit-details-marker]:hidden"
+            >
+              {f.q}
+              <span
+                class="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-ink/20
+                       transition-all duration-300 group-open:rotate-45 group-open:border-gold-500 group-open:bg-gold-500"
+                aria-hidden="true"
+              >
+                <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                  <path
+                    d="M6 1v10M1 6h10"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    class="text-ink group-open:text-white"
+                  />
+                </svg>
+              </span>
+            </summary>
+            <p class="max-w-2xl pb-6 pr-10 leading-relaxed text-ink-soft">{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

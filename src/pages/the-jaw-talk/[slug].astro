@@ -1,0 +1,194 @@
+---
+import Base from '../../layouts/Base.astro';
+import ClosingCTA from '../../components/ClosingCTA.astro';
+import { posts, postsByDate } from '../../data/posts';
+import { site, doctor } from '../../data/site';
+
+export function getStaticPaths() {
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+
+const related = postsByDate.filter((p) => p.slug !== post.slug).slice(0, 3);
+
+const articleSchema = {
+  '@type': 'BlogPosting',
+  '@id': `${site.url}/the-jaw-talk/${post.slug}#article`,
+  headline: post.title,
+  description: post.excerpt,
+  datePublished: post.published,
+  dateModified: post.published,
+  articleSection: post.category,
+  wordCount: post.body.reduce((n, b) => n + b.paras.join(' ').split(/\s+/).length, 0),
+  author: { '@type': 'Person', name: doctor.name, jobTitle: doctor.role },
+  publisher: { '@id': `${site.url}/#clinic` },
+  mainEntityOfPage: `${site.url}/the-jaw-talk/${post.slug}`,
+  isPartOf: { '@id': `${site.url}/the-jaw-talk#blog` },
+};
+
+const breadcrumbSchema = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    { '@type': 'ListItem', position: 2, name: 'The Jaw Talk', item: `${site.url}/the-jaw-talk` },
+    { '@type': 'ListItem', position: 3, name: post.title },
+  ],
+};
+
+const published = new Date(post.published).toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<Base
+  title={post.title}
+  description={post.excerpt}
+  ogType="article"
+  schema={[articleSchema, breadcrumbSchema]}
+>
+  <article>
+    <!-- Header -->
+    <header class="relative overflow-hidden border-b border-ink/[0.07] bg-paper-warm">
+      <div
+        class="pointer-events-none absolute -right-32 -top-32 h-[30rem] w-[30rem] rounded-full bg-gold-500/10 blur-[100px]"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="wrap relative pb-20 pt-16 sm:pb-24 sm:pt-20">
+        <nav aria-label="Breadcrumb" class="mb-9">
+          <ol class="flex flex-wrap items-center gap-2 text-[0.78rem] text-ink-mute">
+            <li><a href="/" class="transition-colors hover:text-ox-600">Home</a></li>
+            <li aria-hidden="true" class="text-ink-mute/40">/</li>
+            <li>
+              <a href="/the-jaw-talk" class="transition-colors hover:text-ox-600">The Jaw Talk</a>
+            </li>
+            <li aria-hidden="true" class="text-ink-mute/40">/</li>
+            <li aria-current="page" class="text-ink">{post.title}</li>
+          </ol>
+        </nav>
+
+        <span class="eyebrow !text-gold-600" data-reveal>{post.category}</span>
+        <h1 class="mt-5 max-w-4xl text-5xl sm:text-6xl" data-reveal style="--reveal-delay:60ms">
+          {post.title}
+        </h1>
+        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-ink-soft" data-reveal style="--reveal-delay:120ms">
+          {post.excerpt}
+        </p>
+
+        <div
+          class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-2 text-[0.85rem] text-ink-mute"
+          data-reveal
+          style="--reveal-delay:180ms"
+        >
+          <span>{post.readingMinutes} min read</span>
+          <span aria-hidden="true" class="text-ink-mute/40">·</span>
+          <time datetime={post.published}>{published}</time>
+          <span aria-hidden="true" class="text-ink-mute/40">·</span>
+          <span>{site.name}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div class="wrap py-20 sm:py-28">
+      <div class="grid gap-14 lg:grid-cols-[1fr_16rem] lg:gap-16">
+        <div class="max-w-2xl">
+          {
+            post.body.map((block) => (
+              <section class="mb-12 last:mb-0" data-reveal>
+                {block.heading && <h2 class="mb-5 text-3xl">{block.heading}</h2>}
+
+                {block.paras.map((p) => (
+                  <p class="mb-5 text-[1.1rem] leading-[1.75] text-ink-soft last:mb-0">{p}</p>
+                ))}
+
+                {block.quote && (
+                  <blockquote class="my-9 border-l-2 border-gold-500 pl-7 font-display text-[1.6rem] italic leading-snug text-ink">
+                    {block.quote}
+                  </blockquote>
+                )}
+
+                {block.list && (
+                  <ul class="mt-6 space-y-3.5">
+                    {block.list.map((item) => (
+                      <li class="flex gap-4 text-[1.05rem] leading-relaxed text-ink-soft">
+                        <span
+                          class="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500"
+                          aria-hidden="true"
+                        />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            ))
+          }
+
+          <div class="mt-14 rounded-[1.75rem] border border-gold-500/25 bg-gold-500/[0.06] p-8">
+            <h2 class="text-2xl">Recognise any of this?</h2>
+            <p class="mt-3 leading-relaxed text-ink-soft">
+              The self-check takes a minute and shows you which of your symptoms trace back to the
+              jaw joint.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-3">
+              <a href="/tmj-self-check" class="btn-primary">Take the self-check</a>
+              <a href="/book" class="btn-ghost">Book a screening</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="lg:sticky lg:top-28 lg:self-start">
+          <div class="rounded-2xl border border-ink/[0.08] bg-white/50 p-7">
+            <h2 class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-ink-mute">
+              TMJ Health Screening
+            </h2>
+            <p class="mt-4 font-display text-3xl text-ox-600">{site.screening.priceDisplay}</p>
+            <p class="mt-2 text-[0.9rem] leading-relaxed text-ink-mute">
+              {site.screening.duration} diagnostic · ages {site.screening.minAge}+
+            </p>
+            <a href="/book" class="btn-primary mt-6 w-full !px-5 text-[0.85rem]">Book now</a>
+            <a
+              href={site.contact.messengerHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-ghost mt-3 w-full !px-5 text-[0.85rem]"
+            >
+              Ask a question
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Related -->
+    <section class="wrap pb-24 sm:pb-32" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="text-3xl" data-reveal>Keep reading</h2>
+      <div class="mt-9 grid gap-5 md:grid-cols-3">
+        {
+          related.map((p, i) => (
+            <a
+              href={`/the-jaw-talk/${p.slug}`}
+              class="card-hover group flex flex-col p-7"
+              data-reveal
+              style={`--reveal-delay:${i * 70}ms`}
+            >
+              <span class="eyebrow !text-gold-600">{p.category}</span>
+              <h3 class="mt-3 text-xl transition-colors duration-300 group-hover:text-ox-600">
+                {p.title}
+              </h3>
+              <span class="mt-5 text-[0.82rem] text-ink-mute">{p.readingMinutes} min read</span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </article>
+
+  <ClosingCTA />
+</Base>

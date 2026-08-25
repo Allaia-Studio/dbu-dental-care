@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand - sampled 1:1 from the real DBU logo and live site */
+  --color-gold-50:  #FAF7EF;
+  --color-gold-100: #F2EBD8;
+  --color-gold-200: #E4D7B4;
+  --color-gold-300: #D2BF8B;
+  --color-gold-400: #C0AC6D;
+  --color-gold-500: #AD9952; /* master brand gold - exact logo value */
+  --color-gold-600: #948143;
+  --color-gold-700: #756636;
+  --color-gold-800: #574B28;
+  --color-gold-900: #3A321B;
+
+  /* Oxblood - the live site announcement bar */
+  --color-ox-50:  #FBF1EF;
+  --color-ox-100: #F3DBD6;
+  --color-ox-200: #E0AFA5;
+  --color-ox-300: #C57C6C;
+  --color-ox-400: #9E4331;
+  --color-ox-500: #7A2110;
+  --color-ox-600: #5B0F00; /* exact */
+  --color-ox-700: #490C00;
+  --color-ox-800: #350900;
+  --color-ox-900: #240600;
+
+  /* Signal - the pain-target rings inside the logo mark */
+  --color-signal: #C23B22;
+
+  /* Paper neutrals - never pure white */
+  --color-paper:      #F7F4EE;
+  --color-paper-warm: #EFE9DE;
+  --color-paper-deep: #E5DCCC;
+  --color-ink:        #1C1613;
+  --color-ink-soft:   #4A403A;
+  --color-ink-mute:   #7A6E65;
+
+  --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 0, "WONK" 0, "opsz" 96;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  /* Visible, brand-coloured focus ring for keyboard users - WCAG 2.4.7 */
+  :focus-visible {
+    outline: 3px solid var(--color-ox-600);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--color-gold-500);
+    color: #fff;
+  }
+}
+
+/* `btn` and `card` are consumed by @apply below, so in Tailwind v4 they have to
+   be real utilities rather than plain component classes. */
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-3.5 text-[0.9rem] font-medium
+         transition-all duration-300 ease-out will-change-transform;
+}
+
+@utility card {
+  @apply rounded-3xl border border-ink/[0.07] bg-white/60 backdrop-blur-sm transition-all duration-500;
+}
+
+@layer components {
+  .wrap { @apply mx-auto w-full max-w-[76rem] px-6 sm:px-8 lg:px-12; }
+  .wrap-wide { @apply mx-auto w-full max-w-[92rem] px-6 sm:px-8 lg:px-12; }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2.5 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-ink-mute;
+  }
+
+  .btn-primary {
+    @apply btn bg-ox-600 text-paper hover:bg-ox-500 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-10px_rgba(91,15,0,0.55)];
+  }
+  .btn-gold {
+    @apply btn bg-gold-500 text-white hover:bg-gold-600 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-10px_rgba(173,153,82,0.6)];
+  }
+  .btn-ghost {
+    @apply btn border border-ink/15 text-ink hover:border-ox-600/40 hover:bg-ox-600/[0.04] hover:-translate-y-0.5;
+  }
+  .btn-ghost-light {
+    @apply btn border border-paper/25 text-paper hover:border-gold-500 hover:bg-gold-500/10 hover:-translate-y-0.5;
+  }
+
+  .card-hover {
+    @apply card hover:-translate-y-1 hover:border-gold-500/35 hover:shadow-[0_24px_60px_-32px_rgba(28,22,19,0.35)];
+  }
+
+  .rule { @apply h-px w-full bg-ink/10; }
+}
+
+/* ---- Scroll reveal ---- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.9s var(--ease-out-soft), transform 0.9s var(--ease-out-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Pain-target rings: the logo mark used as a motion motif ---- */
+@keyframes ring-pulse {
+  0%   { transform: scale(0.55); opacity: 0; }
+  18%  { opacity: 0.55; }
+  100% { transform: scale(1.65); opacity: 0; }
+}
+.ring-pulse > * { animation: ring-pulse 4.2s var(--ease-out-soft) infinite; }
+.ring-pulse > *:nth-child(2) { animation-delay: 1.4s; }
+.ring-pulse > *:nth-child(3) { animation-delay: 2.8s; }
+
+/* SVG shapes default to transform-origin 0 0, so without this the rings scale
+   away from the joint they are supposed to be marking. */
+.ring-pulse > circle {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee-x 46s linear infinite;
+  will-change: transform;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal] { opacity: 1; transform: none; }
+}

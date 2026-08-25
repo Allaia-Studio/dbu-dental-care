@@ -1,0 +1,142 @@
+---
+import { site, navigation } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="relative mt-32 overflow-hidden bg-ox-600 text-paper grain">
+  <!-- Curved transition into the footer -->
+  <svg
+    class="absolute -top-px left-0 w-full text-paper"
+    viewBox="0 0 1440 80"
+    fill="none"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+    style="height:80px"
+  >
+    <path d="M0 0h1440v20C1080 66 360 66 0 20V0z" fill="currentColor"></path>
+  </svg>
+
+  <div class="wrap-wide relative pb-14 pt-32">
+    <div class="grid gap-14 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr]">
+      <!-- Brand -->
+      <div>
+        <img
+          src="/brand/dbu-logo.png"
+          alt={`${site.name} logo`}
+          width="3197"
+          height="1972"
+          loading="lazy"
+          class="h-14 w-auto brightness-0 invert-[0.85] sepia saturate-[3] hue-rotate-[3deg]"
+        />
+        <p class="mt-6 max-w-xs text-[0.92rem] leading-relaxed text-paper/70">
+          {site.description}
+        </p>
+        <p class="mt-6 font-display text-2xl text-gold-300">{site.tagline}</p>
+      </div>
+
+      <!-- Nav -->
+      <nav aria-label="Footer">
+        <h2 class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-paper/45">Explore</h2>
+        <ul class="mt-5 space-y-2.5">
+          {
+            navigation.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="text-[0.92rem] text-paper/75 transition-colors hover:text-gold-300"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <!-- Hours -->
+      <div>
+        <h2 class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-paper/45">Hours</h2>
+        <ul class="mt-5 space-y-3">
+          {
+            site.hours.display.map((h) => (
+              <li>
+                <span class="block text-[0.92rem] text-paper/75">{h.days}</span>
+                <span class:list={['block text-[0.92rem]', h.open ? 'text-gold-300' : 'text-paper/40']}>
+                  {h.time}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h2 class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-paper/45">Visit</h2>
+        <address class="mt-5 space-y-3 not-italic text-[0.92rem] text-paper/75">
+          <p>
+            {site.address.street}<br />
+            {site.address.city}, {site.address.country} {site.address.postalCode}
+          </p>
+          <p class="space-y-1">
+            <a href={site.contact.phoneHref} class="block transition-colors hover:text-gold-300">
+              {site.contact.phone}
+            </a>
+            <a href={site.contact.mobileHref} class="block transition-colors hover:text-gold-300">
+              {site.contact.mobile}
+            </a>
+            <a href={`mailto:${site.contact.email}`} class="block break-all transition-colors hover:text-gold-300">
+              {site.contact.email}
+            </a>
+          </p>
+        </address>
+
+        <div class="mt-5 flex gap-3">
+          <a
+            href={site.contact.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex h-10 w-10 items-center justify-center rounded-full border border-paper/20 transition-all hover:border-gold-500 hover:bg-gold-500/15"
+            aria-label={`${site.name} on Facebook`}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"
+              ></path>
+            </svg>
+          </a>
+          <a
+            href={site.contact.messengerHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex h-10 w-10 items-center justify-center rounded-full border border-paper/20 transition-all hover:border-gold-500 hover:bg-gold-500/15"
+            aria-label="Message the clinic on Messenger"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M12 2C6.3 2 2 6.2 2 11.7c0 3.1 1.4 5.9 3.7 7.7v3.8l3.4-1.9c.9.3 1.9.4 2.9.4 5.7 0 10-4.2 10-9.7S17.7 2 12 2zm1 13.1-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7-5.4 5.8z"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-14 h-px w-full bg-paper/15"></div>
+
+    <div class="mt-7 flex flex-col gap-5 text-[0.8rem] text-paper/55 md:flex-row md:items-center md:justify-between">
+      <p>© {year} {site.legalName}. All rights reserved.</p>
+      <div class="flex flex-wrap gap-x-6 gap-y-2">
+        <a href="/privacy-policy" class="transition-colors hover:text-gold-300">Privacy Policy</a>
+        <a href="/terms" class="transition-colors hover:text-gold-300">Terms</a>
+        <a href="/contact" class="transition-colors hover:text-gold-300">Contact</a>
+      </div>
+    </div>
+
+    <p class="mt-6 max-w-3xl text-[0.75rem] leading-relaxed text-paper/40">
+      The information on this website is provided for general education and does not constitute
+      medical or dental advice, diagnosis or treatment. Always consult a qualified clinician about
+      your own symptoms.
+    </p>
+  </div>
+</footer>

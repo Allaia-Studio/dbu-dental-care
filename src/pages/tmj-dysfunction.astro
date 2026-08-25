@@ -1,0 +1,195 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import ClosingCTA from '../components/ClosingCTA.astro';
+import { site } from '../data/site';
+import { symptoms } from '../data/symptoms';
+import { faqs } from '../data/faqs';
+
+/**
+ * The pillar page. This is the one that should rank for "TMJ Philippines",
+ * "TMD symptoms", "jaw pain specialist Manila" and similar.
+ */
+
+const conditionSchema = {
+  '@type': 'MedicalCondition',
+  name: 'Temporomandibular Joint Dysfunction',
+  alternateName: ['TMJ Dysfunction', 'TMD', 'TMJ Disorder'],
+  description:
+    'A condition where the teeth, jaw bone and facial muscles are unable to work harmoniously together, producing jaw pain, joint noise, headaches, ear symptoms and neck tension.',
+  signOrSymptom: symptoms.map((s) => ({ '@type': 'MedicalSymptom', name: s.short })),
+  possibleTreatment: {
+    '@type': 'MedicalTherapy',
+    name: 'TMJ Pain Management Program',
+    provider: { '@id': `${site.url}/#clinic` },
+  },
+};
+
+const faqSchema = {
+  '@type': 'FAQPage',
+  mainEntity: faqs.slice(0, 8).map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Base
+  title="TMJ Dysfunction (TMD) Explained"
+  description="What TMJ Dysfunction is, the nine symptoms that point to it, and why it shows up as headaches, ear pain and neck tension."
+  schema={[conditionSchema, faqSchema]}
+>
+  <PageHero
+    eyebrow="TMJ Basics"
+    title="TMJ Dysfunction, explained properly."
+    lede="Most patients reach this page after years of being investigated one symptom at a time. Here is the whole mechanism in one place."
+  />
+
+  <!-- What it is -->
+  <section class="wrap py-24 sm:py-32">
+    <div class="grid gap-14 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
+      <div class="lg:sticky lg:top-28 lg:self-start" data-reveal>
+        <span class="eyebrow"><span class="h-px w-8 bg-gold-500"></span>The basics</span>
+        <h2 class="mt-6 text-4xl">Two joints you use thousands of times a day.</h2>
+      </div>
+
+      <div class="max-w-2xl space-y-6 text-[1.08rem] leading-relaxed text-ink-soft" data-reveal style="--reveal-delay:100ms">
+        <p>
+          <strong class="font-medium text-ink">TMJ</strong> stands for temporomandibular joint - the
+          jaw joint. It connects your lower teeth and jaw bone to the skull. You have one on each
+          side, sitting just in front of your ears.
+        </p>
+        <p>
+          <strong class="font-medium text-ink">TMJ Dysfunction</strong>, also called TMD, is a
+          medical condition where the teeth, jaw bone and facial muscles are unable to work
+          harmoniously together.
+        </p>
+        <p>
+          That distinction is worth holding onto. Everybody has a TMJ. What patients mean when they
+          say "I have TMJ" is the dysfunction - the joint no longer moving smoothly, and the muscles
+          around it compensating for it all day.
+        </p>
+
+        <blockquote class="border-l-2 border-gold-500 pl-6 font-display text-2xl italic leading-snug text-ink">
+          Unlike a knee, the jaw joint does not simply hinge. It rotates and then slides forward.
+          That extra freedom is what lets you open wide - and what makes it vulnerable.
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- Symptoms grid -->
+  <section class="relative overflow-hidden bg-paper-warm py-24 sm:py-32" aria-labelledby="symptoms-heading">
+    <div class="wrap">
+      <div class="max-w-3xl" data-reveal>
+        <span class="eyebrow"><span class="h-px w-8 bg-gold-500"></span>Symptoms</span>
+        <h2 id="symptoms-heading" class="mt-6 text-4xl sm:text-5xl lg:text-6xl">
+          Nine signs, and the reason behind each one.
+        </h2>
+        <p class="mt-7 text-lg leading-relaxed text-ink-soft">
+          Because the joint sits against the ear, under the temple and at the top of the neck's
+          postural chain, TMD rarely announces itself at the jaw. This is why it goes unnamed for
+          years.
+        </p>
+      </div>
+
+      <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {
+          symptoms.map((s, i) => (
+            <li class="card p-8" data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
+              <div class="flex items-start justify-between gap-4">
+                <h3 class="text-[1.4rem] leading-snug">{s.label}</h3>
+                <span
+                  class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-signal"
+                  aria-hidden="true"
+                />
+              </div>
+              <p class="mt-4 leading-relaxed text-ink-soft">{s.why}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="mt-12 flex flex-wrap items-center gap-4" data-reveal>
+        <a href="/tmj-self-check" class="btn-primary" data-magnetic="0.18">
+          Check your own symptoms
+        </a>
+        <span class="text-[0.9rem] text-ink-mute">Free, one minute, no sign-up.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why it gets missed -->
+  <section class="wrap py-24 sm:py-32">
+    <div class="mx-auto max-w-3xl">
+      <span class="eyebrow" data-reveal><span class="h-px w-8 bg-gold-500"></span>Why it gets missed</span>
+      <h2 class="mt-6 text-4xl sm:text-5xl" data-reveal style="--reveal-delay:60ms">
+        Four specialists, four clean results, one unexamined joint.
+      </h2>
+
+      <ul class="mt-12 space-y-4">
+        {
+          [
+            { a: 'The ear feels blocked or rings', b: 'The ear is examined, and the ear is fine.' },
+            { a: 'Headaches at the temples', b: 'Treated as tension or stress headache.' },
+            { a: 'The neck will not release', b: 'Massage helps for a day, then it returns.' },
+            { a: 'Facial pressure', b: 'Investigated as sinus, and sinus treatment does nothing.' },
+          ].map((row, i) => (
+            <li
+              class="grid gap-2 rounded-2xl border border-ink/[0.08] bg-white/50 p-6 sm:grid-cols-2 sm:gap-8"
+              data-reveal
+              style={`--reveal-delay:${i * 70}ms`}
+            >
+              <span class="font-medium text-ink">{row.a}</span>
+              <span class="text-ink-soft">{row.b}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="mt-10 text-[1.08rem] leading-relaxed text-ink-soft" data-reveal>
+        Each investigation is reasonable on its own. Together they describe a pattern nobody is
+        looking at as a pattern. Once TMD is confirmed, a scattered list of complaints resolves into
+        one mechanism with one cause - and for most patients, the relief of having a name for it
+        arrives before the clinical relief does.
+      </p>
+    </div>
+  </section>
+
+  <!-- Treatment path -->
+  <section class="relative overflow-hidden bg-ink py-24 text-paper sm:py-32">
+    <div
+      class="pointer-events-none absolute -left-32 top-0 h-[34rem] w-[34rem] rounded-full bg-gold-500/15 blur-[120px]"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="wrap relative">
+      <div class="max-w-3xl" data-reveal>
+        <span class="eyebrow !text-gold-400">
+          <span class="h-px w-8 bg-gold-500"></span>Treatment
+        </span>
+        <h2 class="mt-6 text-4xl text-paper sm:text-5xl">
+          Non-surgical, and built around your own bite.
+        </h2>
+        <p class="mt-7 text-lg leading-relaxed text-paper/70">
+          TMD is not treated with a single standard appliance handed to every patient. The TMJ Pain
+          Management Program that {`Dr. Uy`} curated over ten years addresses the joint mechanics, the
+          muscle overload and the habits that keep re-loading it - which is why it targets
+          recurrence rather than momentary relief.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-4">
+          <a href="/tmj-pain-management-program" class="btn-gold" data-magnetic="0.18">
+            How the program works
+          </a>
+          <a href="/book" class="btn-ghost-light">Book a screening</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FaqAccordion items={faqs.slice(0, 8)} heading="TMJ questions, answered" />
+
+  <ClosingCTA />
+</Base>

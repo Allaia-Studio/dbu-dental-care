@@ -1,0 +1,76 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SelfCheck from '../components/SelfCheck.astro';
+import ClosingCTA from '../components/ClosingCTA.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title="TMJ Self-Check - Do I Have TMJ Dysfunction?"
+  description="A free 1-minute TMJ self-check from a Makati jaw pain specialist. Tick your symptoms and see which ones trace back to the temporomandibular joint, and why."
+>
+  <PageHero
+    eyebrow="Free · 1 minute · No sign-up"
+    title="Do I have TMJ Dysfunction?"
+    lede="A structured way to see whether your symptoms cluster around the jaw joint. It will not diagnose you - but it will show you the connection nobody has explained yet."
+  />
+
+  <SelfCheck />
+
+  <section class="wrap py-24 sm:py-32">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-4xl sm:text-5xl" data-reveal>What happens after the self-check</h2>
+
+      <ol class="mt-12 space-y-px">
+        {
+          [
+            {
+              t: 'You book the TMJ Health Screening',
+              d: `A ${site.screening.duration} structured diagnostic, ${site.screening.priceDisplay}, for ages ${site.screening.minAge} and up. No referral needed.`,
+            },
+            {
+              t: 'Dr. Uy examines the joint, the bite and the muscles together',
+              d: 'Not one symptom at a time. Imaging is done on-site so the structure is reviewed with you in the same visit.',
+            },
+            {
+              t: 'You leave with an answer',
+              d: 'A clear yes or no on TMJ Dysfunction, an explanation of which symptoms trace back to it, and the treatment options actually available to you.',
+            },
+            {
+              t: 'If it is TMD, you get a plan',
+              d: 'The TMJ Pain Management Program is non-surgical and built around your own bite and symptom pattern.',
+            },
+          ].map((s, i) => (
+            <li
+              class="flex gap-7 border-t border-ink/10 py-8 last:border-b"
+              data-reveal
+              style={`--reveal-delay:${i * 80}ms`}
+            >
+              <span class="font-display text-2xl text-gold-500/60">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div>
+                <h3 class="text-2xl">{s.t}</h3>
+                <p class="mt-3 leading-relaxed text-ink-soft">{s.d}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="mt-12 rounded-[1.75rem] border border-ink/10 bg-paper-warm p-8" data-reveal>
+        <h3 class="text-xl">A note on what this tool is</h3>
+        <p class="mt-3 leading-relaxed text-ink-soft">
+          The self-check reflects the symptom list DBU Dental Care uses in practice, weighted by how
+          specific each symptom is to TMJ Dysfunction. It is a prompt to get examined, not a
+          substitute for being examined. If you are in severe pain, or your jaw has locked and will
+          not open, contact the clinic directly rather than waiting for an appointment slot.
+        </p>
+        <a href={site.contact.mobileHref} class="btn-ghost mt-6">Call {site.contact.mobile}</a>
+      </div>
+    </div>
+  </section>
+
+  <ClosingCTA />
+</Base>

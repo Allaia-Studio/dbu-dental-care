@@ -1,0 +1,66 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  /** Breadcrumb trail, excluding Home and the current page. */
+  crumbs?: { label: string; href: string }[];
+}
+
+const { eyebrow, title, lede, crumbs = [] } = Astro.props;
+---
+
+<section class="relative overflow-hidden border-b border-ink/[0.07] bg-paper-warm">
+  <div
+    class="pointer-events-none absolute -right-32 -top-32 h-[30rem] w-[30rem] rounded-full bg-gold-500/10 blur-[100px]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="wrap relative pb-20 pt-16 sm:pb-24 sm:pt-20">
+    <nav aria-label="Breadcrumb" class="mb-9">
+      <ol class="flex flex-wrap items-center gap-2 text-[0.78rem] text-ink-mute">
+        <li><a href="/" class="transition-colors hover:text-ox-600">Home</a></li>
+        {
+          crumbs.map((c) => (
+            <>
+              <li aria-hidden="true" class="text-ink-mute/40">/</li>
+              <li>
+                <a href={c.href} class="transition-colors hover:text-ox-600">
+                  {c.label}
+                </a>
+              </li>
+            </>
+          ))
+        }
+        <li aria-hidden="true" class="text-ink-mute/40">/</li>
+        <li aria-current="page" class="text-ink">{title}</li>
+      </ol>
+    </nav>
+
+    {
+      eyebrow && (
+        <span class="eyebrow" data-reveal>
+          <span class="h-px w-8 bg-gold-500" />
+          {eyebrow}
+        </span>
+      )
+    }
+
+    <h1 class="mt-5 max-w-4xl text-5xl sm:text-6xl lg:text-7xl" data-reveal style="--reveal-delay:60ms">
+      {title}
+    </h1>
+
+    {
+      lede && (
+        <p
+          class="mt-7 max-w-2xl text-lg leading-relaxed text-ink-soft"
+          data-reveal
+          style="--reveal-delay:140ms"
+        >
+          {lede}
+        </p>
+      )
+    }
+  </div>
+</section>

@@ -1,0 +1,60 @@
+---
+/**
+ * Minimal consent notice. The site loads no analytics or third-party trackers
+ * today, so this is a notice rather than a consent gate - and it says so
+ * honestly instead of implying a choice that does nothing.
+ *
+ * If Dr Uy later adds GA4 or the Meta pixel, this needs to become a real
+ * opt-in gate that blocks those scripts until accepted.
+ */
+---
+
+<div
+  data-cookie
+  hidden
+  class="fixed bottom-[5rem] left-4 right-4 z-50 mx-auto max-w-xl rounded-3xl border border-ink/10
+         bg-paper/97 p-5 shadow-[0_28px_70px_-24px_rgba(28,22,19,0.45)] backdrop-blur-xl
+         md:bottom-6 md:left-6 md:right-auto"
+  role="dialog"
+  aria-label="Cookie notice"
+>
+  <p class="text-[0.85rem] leading-relaxed text-ink-soft">
+    This site uses only the storage needed to remember this notice. We do not run advertising or
+    analytics trackers. See our <a
+      href="/privacy-policy"
+      class="font-medium text-ox-600 underline underline-offset-4">Privacy Policy</a
+    >.
+  </p>
+  <button type="button" data-cookie-accept class="btn-primary mt-4 w-full !py-3 text-[0.85rem]">
+    Got it
+  </button>
+</div>
+
+<script>
+  const KEY = 'dbu-cookie-notice-v1';
+  const el = document.querySelector<HTMLElement>('[data-cookie]');
+  const btn = document.querySelector<HTMLButtonElement>('[data-cookie-accept]');
+
+  if (el && btn) {
+    let seen = false;
+    try {
+      seen = localStorage.getItem(KEY) === '1';
+    } catch {
+      // Private mode / storage blocked - fail closed and skip the banner.
+      seen = true;
+    }
+
+    if (!seen) {
+      window.setTimeout(() => (el.hidden = false), 900);
+    }
+
+    btn.addEventListener('click', () => {
+      el.hidden = true;
+      try {
+        localStorage.setItem(KEY, '1');
+      } catch {
+        /* nothing we can do, and nothing breaks */
+      }
+    });
+  }
+</script>

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# The legal pages are handled with <meta name="robots" content="noindex">.
+# They are deliberately NOT disallowed here - a blocked page can never be
+# crawled, so the noindex on it would never be seen.
+
+Sitemap: https://www.dbudentalcare.com/sitemap-index.xml

@@ -1,0 +1,120 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ClosingCTA from '../components/ClosingCTA.astro';
+import { site } from '../data/site';
+import { services } from '../data/services';
+
+const serviceSchema = services.map((s) => ({
+  '@type': 'Service',
+  name: s.title,
+  description: s.summary,
+  provider: { '@id': `${site.url}/#clinic` },
+  ...(s.price
+    ? {
+        offers: {
+          '@type': 'Offer',
+          price: String(site.screening.price),
+          priceCurrency: 'PHP',
+        },
+      }
+    : {}),
+}));
+---
+
+<Base
+  title="Dental Services in Makati"
+  description="TMJ screening, on-site digital X-ray, Invisalign, bruxism care and teeth replacement at DBU Dental Care, Makati - all planned around your bite."
+  schema={serviceSchema}
+>
+  <PageHero
+    eyebrow="Dental Services"
+    title="Every service, planned around the bite."
+    lede="DBU is a TMJ practice first. That changes how everything else is approached - alignment, restorations and imaging are all decisions about how your jaw closes, not only how your teeth look."
+  />
+
+  <section class="wrap py-24 sm:py-32">
+    <div class="space-y-6">
+      {
+        services.map((s, i) => (
+          <article
+            id={s.id}
+            class="scroll-mt-28 rounded-[2rem] border border-ink/[0.08] bg-white/50 p-8 sm:p-12"
+            data-reveal
+            style={`--reveal-delay:${(i % 3) * 60}ms`}
+          >
+            <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+              <div>
+                <p class="font-display text-[1.15rem] italic text-gold-600">“{s.question}”</p>
+                <h2 class="mt-4 text-3xl sm:text-4xl">{s.title}</h2>
+                <p class="mt-5 text-[1.08rem] leading-relaxed text-ink-soft">{s.summary}</p>
+                <p class="mt-4 leading-relaxed text-ink-soft">{s.detail}</p>
+
+                <div class="mt-8 flex flex-wrap items-center gap-4">
+                  <a href="/book" class="btn-primary">
+                    {s.featured ? 'Book this' : 'Ask about this'}
+                  </a>
+                  {s.price && (
+                    <span class="font-display text-2xl text-ox-600">{s.price}</span>
+                  )}
+                </div>
+              </div>
+
+              <aside class="rounded-2xl border border-ink/[0.08] bg-paper-warm p-7 lg:self-start">
+                <h3 class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-ink-mute">
+                  What you get
+                </h3>
+                <ul class="mt-5 space-y-3.5">
+                  {s.outcomes.map((o) => (
+                    <li class="flex gap-3.5 leading-relaxed text-ink-soft">
+                      <svg
+                        width="15"
+                        height="15"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        class="mt-1.5 shrink-0 text-gold-600"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M1.5 8.5l4 4L14.5 3"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      {o}
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <!-- Honest gap note: we do not publish what we cannot verify -->
+    <div class="mt-12 rounded-[1.75rem] border border-ink/10 bg-paper-warm p-8" data-reveal>
+      <h2 class="text-xl">Not sure which one you need?</h2>
+      <p class="mt-3 max-w-2xl leading-relaxed text-ink-soft">
+        Most patients do not arrive knowing. That is what the screening is for - it establishes what
+        is happening before anyone recommends treatment. If you would rather ask a question first,
+        message the clinic and someone from the team will answer.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-4">
+        <a href="/book" class="btn-primary">Book a screening</a>
+        <a
+          href={site.contact.messengerHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-ghost"
+        >
+          Message the clinic
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <ClosingCTA />
+</Base>

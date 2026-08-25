@@ -1,0 +1,73 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+
+const sections = [
+  {
+    h: 'About this website',
+    p: [
+      `This website is operated by ${site.legalName}, ${site.address.full}. By using it you accept these terms.`,
+    ],
+  },
+  {
+    h: 'Not medical advice',
+    p: [
+      'Everything on this site, including the articles in The Jaw Talk and the TMJ self-check tool, is provided for general education. It is not medical or dental advice, and it does not diagnose any condition.',
+      'The self-check is a screening prompt only. A result of any kind is not a diagnosis of TMJ Dysfunction, and a low result does not rule it out. Only a clinical examination can establish what is happening in your jaw.',
+      'Never delay seeking professional advice because of something you read here. If you are in severe pain, or your jaw has locked, contact the clinic or seek urgent care.',
+    ],
+  },
+  {
+    h: 'Appointments and pricing',
+    p: [
+      `The TMJ Health Screening is ${site.screening.priceDisplay} for a ${site.screening.duration} appointment, for patients aged ${site.screening.minAge} and above. Prices shown on this site are current at the time of publication and may change.`,
+      'The cost of treatment beyond the screening depends on your diagnosis and is quoted to you before treatment begins.',
+      'Submitting a booking request does not confirm an appointment. Your appointment is confirmed once the clinic replies to you.',
+    ],
+  },
+  {
+    h: 'Payment',
+    p: [site.payment.hmo, `${site.payment.installmentNote} Available through ${site.payment.installments.join(', ')}.`],
+  },
+  {
+    h: 'Intellectual property',
+    p: [
+      `The DBU Dental Care name, logo and the content of this site belong to ${site.legalName} unless stated otherwise. Please do not reproduce them without permission.`,
+    ],
+  },
+  {
+    h: 'Third-party links',
+    p: [
+      'This site links to external services including Facebook Messenger, WhatsApp and Google Maps. We are not responsible for their content or their handling of your data.',
+    ],
+  },
+  {
+    h: 'Governing law',
+    p: ['These terms are governed by the laws of the Republic of the Philippines.'],
+  },
+];
+---
+
+<Base
+  title="Terms of Use"
+  description="Terms of use for the DBU Dental Care website, including important information about medical disclaimers, appointments and pricing."
+  noindex
+>
+  <PageHero eyebrow="Legal" title="Terms of Use" />
+
+  <section class="wrap py-20 sm:py-28">
+    <div class="max-w-2xl">
+      {
+        sections.map((s) => (
+          <section class="mb-11 last:mb-0" data-reveal>
+            <h2 class="text-2xl">{s.h}</h2>
+            {s.p.map((para) => (
+              <p class="mt-4 leading-relaxed text-ink-soft">{para}</p>
+            ))}
+          </section>
+        ))
+      }
+    </div>
+  </section>
+</Base>

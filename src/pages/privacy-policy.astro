@@ -1,0 +1,98 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+
+/**
+ * Written against the Philippine Data Privacy Act of 2012 (RA 10173), which is
+ * what applies to a Makati clinic.
+ *
+ * VERIFY before launch: Dr Uy must confirm the Data Protection Officer contact
+ * and the retention period the clinic actually uses for patient records.
+ */
+
+const sections = [
+  {
+    h: 'Who we are',
+    p: [
+      `${site.legalName} operates this website. Our clinic is at ${site.address.full}. You can reach us on ${site.contact.mobile} or at ${site.contact.email}.`,
+      'We are the personal information controller for the data described in this policy, as defined by the Philippine Data Privacy Act of 2012 (Republic Act No. 10173).',
+    ],
+  },
+  {
+    h: 'What we collect',
+    p: [
+      'Through this website we collect only what you choose to send us. If you use the booking request form, that is your name, mobile number, and optionally your email address, preferred appointment time, the symptoms you tick, and any notes you write.',
+      'The booking form does not transmit anything on its own. It composes a message and opens it in your own email application, so nothing reaches us until you press send there.',
+      'If you contact us through Messenger, WhatsApp, phone or email, we receive whatever you send through those services. Those platforms are operated by third parties under their own privacy policies.',
+    ],
+  },
+  {
+    h: 'Cookies and tracking',
+    p: [
+      'This website does not run advertising or analytics trackers. We store a single item in your browser to remember that you have seen our cookie notice, so it is not shown again. That item stays on your device and is never sent to us.',
+      'Our contact page embeds a Google Maps frame so you can find the clinic. Google may set its own cookies when that map loads. If you would rather avoid that, use the "Open in Google Maps" link instead, or the written address.',
+    ],
+  },
+  {
+    h: 'How we use your information',
+    p: [
+      'To respond to your enquiry, arrange your appointment, and provide the dental care you ask us for. We do not sell your personal information, and we do not share it for marketing.',
+      'Clinical records created during treatment are handled under our clinical record-keeping obligations, separately from this website.',
+    ],
+  },
+  {
+    h: 'How long we keep it',
+    p: [
+      'Enquiries that do not lead to an appointment are kept only as long as needed to deal with them. Patient records are retained for the period required of dental practices in the Philippines.',
+    ],
+  },
+  {
+    h: 'Your rights',
+    p: [
+      'Under the Data Privacy Act you have the right to be informed, to access your personal data, to correct inaccuracies, to object to processing, to erasure or blocking in certain circumstances, to damages, and to data portability.',
+      `To exercise any of these, contact us at ${site.contact.email} or call ${site.contact.mobile}. You also have the right to lodge a complaint with the National Privacy Commission.`,
+    ],
+  },
+  {
+    h: 'Security',
+    p: [
+      'This site is served over an encrypted connection. We take reasonable organisational and technical measures to protect the information you send us, though no method of transmission over the internet is completely secure.',
+    ],
+  },
+  {
+    h: 'Changes to this policy',
+    p: [
+      'If we change how we handle personal information, we will update this page. Please check back from time to time.',
+    ],
+  },
+];
+---
+
+<Base
+  title="Privacy Policy"
+  description="How DBU Dental Care collects, uses and protects your personal information, under the Philippine Data Privacy Act of 2012."
+  noindex
+>
+  <PageHero eyebrow="Legal" title="Privacy Policy" />
+
+  <section class="wrap py-20 sm:py-28">
+    <div class="max-w-2xl">
+      {
+        sections.map((s) => (
+          <section class="mb-11 last:mb-0" data-reveal>
+            <h2 class="text-2xl">{s.h}</h2>
+            {s.p.map((para) => (
+              <p class="mt-4 leading-relaxed text-ink-soft">{para}</p>
+            ))}
+          </section>
+        ))
+      }
+
+      <p class="mt-14 border-t border-ink/10 pt-6 text-[0.85rem] text-ink-mute">
+        This policy is provided as a starting point and should be reviewed by {site.legalName}{' '}
+        before launch to confirm it matches the clinic's actual record-keeping practice.
+      </p>
+    </div>
+  </section>
+</Base>

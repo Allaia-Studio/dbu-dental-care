@@ -1,0 +1,179 @@
+---
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FloatingContact from '../components/FloatingContact.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Page-specific canonical override. Defaults to the current path. */
+  canonical?: string;
+  /** Extra JSON-LD graph nodes for this page. */
+  schema?: Record<string, unknown>[];
+  noindex?: boolean;
+  ogType?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  canonical,
+  schema = [],
+  noindex = false,
+  ogType = 'website',
+} = Astro.props;
+
+const canonicalURL = new URL(canonical ?? Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og-image.png', Astro.site);
+
+/* Full title, but never let it run past what Google will render. */
+const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
+
+/* ---- Organisation / LocalBusiness graph -------------------------------- */
+const clinicId = `${site.url}/#clinic`;
+
+const clinicNode = {
+  '@type': ['Dentist', 'MedicalBusiness', 'LocalBusiness'],
+  '@id': clinicId,
+  name: site.name,
+  alternateName: site.positioning,
+  slogan: site.tagline,
+  description: site.description,
+  url: site.url,
+  logo: new URL('/brand/dbu-logo.png', Astro.site).href,
+  image: new URL('/brand/dbu-logo.png', Astro.site).href,
+  telephone: '+63285535786',
+  email: site.contact.email,
+  sameAs: [site.contact.facebook],
+  priceRange: '₱₱',
+  currenciesAccepted: 'PHP',
+  medicalSpecialty: 'Dentistry',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: site.address.city,
+    addressRegion: site.address.region,
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.countryCode,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 14.5547,
+    longitude: 121.0122,
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '10:00',
+      closes: '19:00',
+    },
+  ],
+  areaServed: [
+    { '@type': 'City', name: 'Makati' },
+    { '@type': 'AdministrativeArea', name: 'Metro Manila' },
+    { '@type': 'Country', name: 'Philippines' },
+  ],
+  availableService: {
+    '@type': 'MedicalTherapy',
+    name: 'TMJ Pain Management Program',
+    alternateName: 'TMD treatment',
+  },
+};
+
+const websiteNode = {
+  '@type': 'WebSite',
+  '@id': `${site.url}/#website`,
+  url: site.url,
+  name: site.name,
+  publisher: { '@id': clinicId },
+  inLanguage: 'en-PH',
+};
+
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [clinicNode, websiteNode, ...schema],
+};
+---
+
+<!doctype html>
+<html lang="en-PH">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="generator" content={Astro.generator} />
+
+    <link rel="icon" type="image/png" href="/brand/favicon.png" />
+    <link rel="apple-touch-icon" href="/brand/favicon.png" />
+    <meta name="theme-color" content="#5B0F00" />
+
+    <!-- Local SEO signals -->
+    <meta name="geo.region" content="PH-00" />
+    <meta name="geo.placename" content="Makati City" />
+    <meta name="geo.position" content="14.5547;121.0122" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="en_PH" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name} - ${site.positioning}`} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Scroll-reveal is progressive enhancement: without JS the class that
+         reveals content never lands, so show everything up front instead. -->
+    <noscript>
+      <style>
+        [data-reveal] {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
+
+    <script type="application/ld+json" set:html={JSON.stringify(graph)} is:inline />
+  </head>
+
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ox-600 focus:px-6 focus:py-3 focus:text-paper"
+    >
+      Skip to content
+    </a>
+
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <FloatingContact />
+    <CookieBanner />
+
+    <script>
+      import { initMotion } from '../scripts/motion';
+      initMotion();
+    </script>
+  </body>
+</html>

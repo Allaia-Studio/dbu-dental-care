@@ -1,0 +1,53 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  lede?: string;
+}
+
+const {
+  title = 'Stop guessing what your jaw is doing.',
+  lede = `The TMJ Health Screening is a ${site.screening.duration} diagnostic that tells you whether the joint is the cause. ${site.screening.priceDisplay}, ages ${site.screening.minAge} and up.`,
+} = Astro.props;
+---
+
+<section class="relative overflow-hidden bg-ink py-24 text-paper sm:py-32">
+  <div
+    class="pointer-events-none absolute left-1/2 top-0 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-gold-500/15 blur-[120px]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="wrap relative text-center">
+    <!-- The logo's target rings, at scale -->
+    <div class="ring-pulse relative mx-auto mb-10 h-16 w-16" aria-hidden="true">
+      <span class="absolute inset-0 rounded-full border border-signal/70"></span>
+      <span class="absolute inset-0 rounded-full border border-signal/70"></span>
+      <span class="absolute inset-0 rounded-full border border-signal/70"></span>
+      <span class="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal"
+      ></span>
+    </div>
+
+    <h2 class="mx-auto max-w-3xl text-5xl text-paper sm:text-6xl" data-reveal>{title}</h2>
+    <p class="mx-auto mt-7 max-w-xl text-lg leading-relaxed text-paper/70" data-reveal style="--reveal-delay:80ms">
+      {lede}
+    </p>
+
+    <div class="mt-11 flex flex-wrap items-center justify-center gap-4" data-reveal style="--reveal-delay:160ms">
+      <a href="/book" class="btn-gold" data-magnetic="0.2">Book a Screening</a>
+      <a
+        href={site.contact.messengerHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-ghost-light"
+      >
+        Message the clinic
+      </a>
+    </div>
+
+    <p class="mt-9 text-[0.85rem] text-paper/45">
+      {site.address.full} · <a href={site.contact.mobileHref} class="text-gold-400 underline-offset-4 hover:underline">{site.contact.mobile}</a>
+    </p>
+  </div>
+</section>
