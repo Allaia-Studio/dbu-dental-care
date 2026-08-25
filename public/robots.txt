@@ -5,4 +5,6 @@ Allow: /
 # They are deliberately NOT disallowed here - a blocked page can never be
 # crawled, so the noindex on it would never be seen.
 
+# Plain-language summary for AI assistants: /llms.txt
+
 Sitemap: https://www.dbudentalcare.com/sitemap-index.xml

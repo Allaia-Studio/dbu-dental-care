@@ -92,9 +92,42 @@ function initMagnetic() {
   });
 }
 
+
+/** Hero video is decorative. Anyone who asked the OS for less motion gets the
+ *  poster frame instead, and we stop the download rather than just pausing. */
+function initHeroVideo() {
+  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  if (!video) return;
+
+  if (prefersReduced()) {
+    video.removeAttribute('autoplay');
+    video.pause();
+    video.removeAttribute('src');
+    video.querySelectorAll('source').forEach((s) => s.remove());
+    video.load(); // falls back to the poster
+    return;
+  }
+
+  // Some browsers refuse autoplay until the element is muted in JS too.
+  video.muted = true;
+  const play = () => video.play().catch(() => {});
+  if (video.readyState >= 2) play();
+  else video.addEventListener('loadeddata', play, { once: true });
+
+  // Don't burn cycles animating a hero nobody is looking at.
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      ([entry]) => (entry.isIntersecting ? play() : video.pause()),
+      { threshold: 0.05 }
+    );
+    io.observe(video);
+  }
+}
+
 export function initMotion() {
   initSmoothScroll();
   initReveal();
   initHeader();
   initMagnetic();
+  initHeroVideo();
 }
