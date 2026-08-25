@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import ClosingCTA from '../components/ClosingCTA.astro';
+import Photo from '../components/Photo.astro';
 import { site, doctor, team, pillars } from '../data/site';
 
 const physicianSchema = {
@@ -42,9 +43,21 @@ const physicianSchema = {
           </p>
         </div>
 
-        <!-- Portraits are the client's to supply; we do not substitute stock people. -->
-        <p class="mt-5 text-[0.8rem] leading-relaxed text-ink-mute">
-          Clinic and team photography to be supplied by DBU Dental Care.
+        <div class="mt-5">
+          <Photo
+            src="/photos/profile-window"
+            alt="A woman standing in profile beside a window, lit from one side"
+            ratio="4/5"
+            tone="cool"
+            sizes="(min-width: 1024px) 32vw, 100vw"
+          />
+        </div>
+
+        <!-- Portraits of Dr Uy and the team are the client's to supply; we do not
+             substitute stock people for real clinicians. -->
+        <p class="mt-4 text-[0.8rem] leading-relaxed text-ink-mute">
+          Portraits of Dr. Uy and the team to be supplied by DBU Dental Care. The photography here
+          is atmospheric only.
         </p>
       </div>
 

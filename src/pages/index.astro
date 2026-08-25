@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import SelfCheck from '../components/SelfCheck.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
 import ClosingCTA from '../components/ClosingCTA.astro';
+import Photo from '../components/Photo.astro';
 import { site, doctor, pillars, dismissals } from '../data/site';
 import { services } from '../data/services';
 import { faqs } from '../data/faqs';
@@ -112,20 +113,27 @@ const latest = postsByDate.slice(0, 3);
         </dl>
       </div>
 
-      <!-- Brand mark, large -->
+      <!-- Profile photo with the brand mark floated over it -->
       <div class="relative hidden lg:block" data-reveal style="--reveal-delay:180ms">
-        <div class="relative rounded-[2.5rem] border border-ink/[0.07] bg-white/50 p-12 backdrop-blur-sm">
-          <img
-            src="/brand/dbu-logo.png"
-            alt=""
-            width="3197"
-            height="1972"
-            class="w-full"
-            fetchpriority="high"
-          />
-          <p class="mt-8 border-t border-ink/10 pt-6 text-center text-[0.85rem] leading-relaxed text-ink-mute">
-            The mark holds a head in profile, with the pain radiating from a single point -
-            the temporomandibular joint.
+        <Photo
+          src="/photos/profile-hero"
+          alt="A woman photographed in profile, her jaw and cheekbone lit from the side"
+          ratio="4/5"
+          tone="cool"
+          sizes="(min-width: 1024px) 34vw, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          mark
+        />
+
+        <div
+          class="absolute -bottom-10 -left-12 w-[15.5rem] rounded-[1.5rem] border border-ink/[0.07]
+                 bg-paper/95 p-6 shadow-[0_28px_60px_-28px_rgba(28,22,19,0.5)] backdrop-blur-md"
+        >
+          <img src="/brand/dbu-logo.png" alt="" width="3197" height="1972" class="w-full" />
+          <p class="mt-4 border-t border-ink/10 pt-4 text-[0.78rem] leading-relaxed text-ink-mute">
+            The mark holds a head in profile, with the pain radiating from a single point - the
+            temporomandibular joint.
           </p>
         </div>
       </div>
@@ -159,7 +167,21 @@ const latest = postsByDate.slice(0, 3);
       </h2>
     </div>
 
-    <ul class="mt-14 grid gap-5 md:grid-cols-3">
+    <div class="mt-14 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-16">
+      <div data-reveal>
+        <Photo
+          src="/photos/hand-to-jaw"
+          alt="A woman resting her fingers against her jaw joint, just in front of the ear"
+          ratio="4/5"
+          tone="warm"
+          sizes="(min-width: 1024px) 38vw, 100vw"
+        />
+        <p class="mt-4 text-[0.8rem] leading-relaxed text-ink-mute">
+          The spot most patients press without thinking - the joint itself, just in front of the ear.
+        </p>
+      </div>
+
+      <ul class="grid gap-5 sm:grid-cols-1">
       {
         dismissals.map((quote, i) => (
           <li class="card-hover p-8" data-reveal style={`--reveal-delay:${i * 90}ms`}>
@@ -183,7 +205,8 @@ const latest = postsByDate.slice(0, 3);
           </li>
         ))
       }
-    </ul>
+      </ul>
+    </div>
 
     <div class="mt-14 flex flex-col items-start gap-6 rounded-[2rem] border border-gold-500/25 bg-gold-500/[0.06] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10" data-reveal>
       <p class="max-w-2xl text-[1.15rem] leading-relaxed text-ink">
@@ -300,16 +323,32 @@ const latest = postsByDate.slice(0, 3);
   <!-- ==================== CLINIC ==================== -->
   <section class="wrap py-24 sm:py-32" aria-labelledby="clinic-heading">
     <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-      <div class="relative overflow-hidden rounded-[2rem]" data-reveal>
-        <img
-          src="/photos/clinic-xray.jpg"
-          alt="The digital panoramic X-ray suite at DBU Dental Care in Makati"
-          width="533"
-          height="533"
-          loading="lazy"
-          class="aspect-[4/5] w-full object-cover"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/25 to-transparent" aria-hidden="true"></div>
+      <div class="relative" data-reveal>
+        <!-- The clinic's own photograph of their X-ray suite, layered with a
+             wider shot of imaging being read. -->
+        <div class="overflow-hidden rounded-[1.75rem]">
+          <img
+            src="/photos/clinic-xray.jpg"
+            alt="The digital panoramic X-ray suite at DBU Dental Care in Makati"
+            width="533"
+            height="533"
+            loading="lazy"
+            decoding="async"
+            class="aspect-[4/5] w-full object-cover"
+            style="filter:saturate(0.72) contrast(1.04) sepia(0.1)"
+          />
+        </div>
+
+        <div class="absolute -bottom-10 -right-6 w-[58%] sm:-right-10 sm:w-[52%]">
+          <Photo
+            src="/photos/reading-xrays"
+            alt="A clinician holding dental X-ray films up against a lightbox to read them"
+            ratio="3/2"
+            tone="cool"
+            sizes="(min-width: 1024px) 24vw, 45vw"
+            class="!rounded-[1.25rem] shadow-[0_28px_60px_-28px_rgba(28,22,19,0.55)] ring-4 ring-paper"
+          />
+        </div>
       </div>
 
       <div data-reveal style="--reveal-delay:100ms">

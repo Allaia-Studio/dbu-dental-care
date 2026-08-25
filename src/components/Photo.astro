@@ -1,0 +1,124 @@
+---
+/**
+ * Editorial photography with a consistent treatment.
+ *
+ * Every photo on the site goes through here so the grading, grain and rounding
+ * stay identical, and so nothing ships without alt text.
+ *
+ * `tone` grades the image toward the brand rather than leaving it raw stock:
+ *   warm  - subtle gold cast, for paper sections
+ *   cool  - desaturated, for clinical content
+ *   deep  - darkened, for placing type over
+ */
+interface Props {
+  src: string;
+  alt: string;
+  /** width/height of the stored crop, so the box never jumps while loading */
+  ratio: '4/5' | '3/2' | '1/1';
+  tone?: 'warm' | 'cool' | 'deep' | 'none';
+  sizes?: string;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'auto';
+  /** Adds the pain-target rings as a small overlay, tying stock back to the brand */
+  mark?: boolean;
+}
+
+const {
+  src,
+  alt,
+  ratio,
+  tone = 'warm',
+  sizes = '(min-width: 1024px) 45vw, 100vw',
+  class: className = '',
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  mark = false,
+} = Astro.props;
+
+const dims = { '4/5': [1600, 2000], '3/2': [1600, 1067], '1/1': [1600, 1600] }[ratio];
+
+const toneClass = {
+  warm: 'photo-warm',
+  cool: 'photo-cool',
+  deep: 'photo-deep',
+  none: '',
+}[tone];
+---
+
+<figure class={`photo-frame grain ${className}`} style={`--ratio:${ratio.replace('/', ' / ')}`}>
+  <img
+    src={`${src}-1600.webp`}
+    srcset={`${src}-800.webp 800w, ${src}-1600.webp 1600w`}
+    sizes={sizes}
+    alt={alt}
+    width={dims[0]}
+    height={dims[1]}
+    loading={loading}
+    decoding="async"
+    fetchpriority={fetchpriority}
+    class={toneClass}
+  />
+
+  {
+    mark && (
+      <span class="ring-pulse pointer-events-none absolute bottom-5 right-5 h-11 w-11" aria-hidden="true">
+        <span class="absolute inset-0 rounded-full border border-signal/80" />
+        <span class="absolute inset-0 rounded-full border border-signal/80" />
+        <span class="absolute inset-0 rounded-full border border-signal/80" />
+        <span class="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal" />
+      </span>
+    )
+  }
+</figure>
+
+<style>
+  .photo-frame {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 1.75rem;
+    aspect-ratio: var(--ratio);
+    background: var(--color-paper-deep);
+  }
+
+  .photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 1.2s var(--ease-out-soft);
+  }
+
+  /* Grading, so stock reads as part of the brand rather than dropped in */
+  .photo-warm {
+    filter: saturate(0.72) contrast(1.04) sepia(0.14) brightness(1.01);
+  }
+  .photo-cool {
+    filter: saturate(0.55) contrast(1.06);
+  }
+  .photo-deep {
+    filter: saturate(0.6) contrast(1.08) brightness(0.82);
+  }
+
+  /* Grain sits over the image, not the whole card */
+  .photo-frame::after {
+    border-radius: inherit;
+    opacity: 0.34;
+  }
+
+  @media (hover: hover) {
+    .photo-frame:hover img {
+      transform: scale(1.035);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-frame img {
+      transition: none;
+    }
+    .photo-frame:hover img {
+      transform: none;
+    }
+  }
+</style>

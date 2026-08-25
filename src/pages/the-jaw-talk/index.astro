@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import ClosingCTA from '../../components/ClosingCTA.astro';
+import Photo from '../../components/Photo.astro';
 import { postsByDate } from '../../data/posts';
 import { site } from '../../data/site';
 
@@ -66,6 +67,14 @@ const [lead, ...rest] = postsByDate;
       </div>
 
       <div class="flex flex-col justify-end border-t border-ink/10 pt-6 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+        <Photo
+          src="/photos/profile-mono"
+          alt="A black and white portrait in profile, the line of the jaw clearly visible"
+          ratio="1/1"
+          tone="cool"
+          sizes="(min-width: 1024px) 26vw, 100vw"
+          class="mb-6 !rounded-[1.25rem]"
+        />
         <dl class="space-y-4 text-[0.9rem]">
           <div>
             <dt class="text-ink-mute">Reading time</dt>
