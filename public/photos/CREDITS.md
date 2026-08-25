@@ -4,9 +4,9 @@
 
 | File | Source |
 | --- | --- |
-| `clinic-xray.jpg` | DBU Dental Care's own photograph of their panoramic X-ray suite, taken from their existing website. |
+| `clinic-xray.jpg`, `clinic-xray-sq-*` | DBU Dental Care's own photograph of their panoramic X-ray suite, taken from their existing website. Used for the X-Ray Services card, so at least one service image is genuinely theirs. |
 
-## Licensed stock — Unsplash
+## Licensed stock - Unsplash
 
 All images below are used under the [Unsplash License](https://unsplash.com/license), which
 permits free commercial use without attribution. Attribution is recorded here anyway so the
@@ -20,6 +20,11 @@ originals can be traced, re-licensed or replaced.
 | `reading-xrays-*` | `https://images.unsplash.com/photo-1777444969135-caf869407707` |
 | `profile-window-*` | `https://images.unsplash.com/photo-1759405186191-f312aa61bd40` |
 | `profile-mono-*` | `https://images.unsplash.com/photo-1611178206064-2ae27f72b9ca` |
+| `svc-screening-*` | `https://images.unsplash.com/photo-1606811856475-5e6fcdc6e509` |
+| `svc-program-*` | `https://images.unsplash.com/photo-1698749778813-ad5f2814e50f` |
+| `svc-grinding-*` | `https://images.unsplash.com/photo-1777445826358-f95518f49b44` |
+| `svc-alignment-*` | `https://images.unsplash.com/photo-1564420228450-d9a5bc8d6565` |
+| `svc-replacement-*` | `https://images.unsplash.com/photo-1771442873035-474765b40ac6` |
 
 Each is stored centre-cropped to a fixed aspect and exported as WebP at 1600px and 800px
 for `srcset`.

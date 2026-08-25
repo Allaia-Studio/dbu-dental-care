@@ -18,11 +18,17 @@ export interface Service {
   outcomes: string[];
   price?: string;
   featured?: boolean;
+  /** Base path for the card image; -1200/-600 webp variants exist. */
+  image: string;
+  imageAlt: string;
 }
 
 export const services: Service[] = [
   {
     id: 'tmj-health-screening',
+    image: '/photos/svc-screening',
+    imageAlt:
+      'A dental mirror and explorer laid out on a clean surface before an examination',
     question: 'I want to know if I have TMJ Dysfunction',
     title: 'TMJ Health Screening',
     summary:
@@ -39,6 +45,9 @@ export const services: Service[] = [
   },
   {
     id: 'tmj-pain-management',
+    image: '/photos/svc-program',
+    imageAlt:
+      'A dental mirror held in the foreground of a treatment room',
     question: 'I want the pain to stop coming back',
     title: 'TMJ Pain Management Program',
     summary:
@@ -54,6 +63,9 @@ export const services: Service[] = [
   },
   {
     id: 'x-ray',
+    image: '/photos/clinic-xray-sq',
+    imageAlt:
+      'The digital panoramic X-ray suite at DBU Dental Care in Makati',
     question: 'I need imaging of my jaw and teeth',
     title: 'X-Ray Services',
     summary: 'On-site digital imaging, so diagnosis does not depend on sending you elsewhere.',
@@ -63,6 +75,9 @@ export const services: Service[] = [
   },
   {
     id: 'grinding',
+    image: '/photos/svc-grinding',
+    imageAlt:
+      'A dental model of the upper and lower teeth held in one hand, examined with a probe',
     question: 'My jaw clicks, or I grind my teeth',
     title: 'Clicking, Grinding & Clenching',
     summary:
@@ -73,6 +88,9 @@ export const services: Service[] = [
   },
   {
     id: 'alignment',
+    image: '/photos/svc-alignment',
+    imageAlt:
+      'Clear orthodontic aligners held in an open hand beside their case',
     question: 'My teeth are misaligned',
     title: 'Teeth Alignment',
     summary: 'Invisalign and alignment treatment from a Certified ASEAN Invisalign Provider.',
@@ -82,6 +100,9 @@ export const services: Service[] = [
   },
   {
     id: 'replacement',
+    image: '/photos/svc-replacement',
+    imageAlt:
+      'A gloved hand holding a dental implant fitted with a crown',
     question: 'I need a tooth replaced',
     title: 'Teeth Replacement',
     summary: 'Restoring missing teeth so the bite loads evenly again.',

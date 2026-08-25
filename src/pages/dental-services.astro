@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import ClosingCTA from '../components/ClosingCTA.astro';
+import Photo from '../components/Photo.astro';
 import { site } from '../data/site';
 import { services } from '../data/services';
 import BookLink from '../components/BookLink.astro';
@@ -46,6 +47,14 @@ const serviceSchema = services.map((s) => ({
           >
             <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
               <div>
+                <Photo
+                  src={s.image}
+                  alt={s.imageAlt}
+                  ratio="3/2"
+                  tone="warm"
+                  sizes="(min-width: 1024px) 46vw, 100vw"
+                  class="mb-8 !rounded-[1.25rem]"
+                />
                 <p class="font-display text-[1.15rem] italic text-gold-600">“{s.question}”</p>
                 <h2 class="mt-4 text-3xl sm:text-4xl">{s.title}</h2>
                 <p class="mt-5 text-[1.08rem] leading-relaxed text-ink-soft">{s.summary}</p>
