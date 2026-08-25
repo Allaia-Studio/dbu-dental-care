@@ -1,0 +1,27 @@
+---
+import { site } from '../data/site';
+
+/**
+ * Every booking CTA on the site goes through here, so swapping
+ * site.booking.url for a real booking system (Cal.com / Fresha / Calendly)
+ * updates all of them at once. External URLs open in a new tab.
+ */
+interface Props {
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { class: className, ...rest } = Astro.props;
+const href = site.booking.url;
+const isExternal = /^https?:\/\//.test(href);
+---
+
+<a
+  href={href}
+  class={className}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  {...rest}
+>
+  <slot />
+</a>

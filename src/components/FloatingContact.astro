@@ -1,58 +1,91 @@
 ---
 import { site } from '../data/site';
+import ChannelIcon from './ChannelIcon.astro';
 
 /**
  * Two patterns, one component:
  *  - desktop: an expanding FAB stack, bottom-right
  *  - mobile:  a fixed bottom action bar, because in PH the tap-to-chat path
- *             (Messenger / WhatsApp) converts far harder than a form
+ *             (Messenger / WhatsApp / Viber) converts far harder than a form
  *
- * Body gets bottom padding on mobile via the spacer so the bar never covers
- * the footer's last row.
+ * Every "Book" target reads site.booking.url, so pointing the site at a real
+ * booking system is a one-line change in src/data/site.ts.
  */
 
-const channels = [
+const bookHref = site.booking.url;
+const bookIsExternal = /^https?:\/\//.test(bookHref);
+
+type Channel = {
+  key: string;
+  label: string;
+  sub: string;
+  href: string;
+  brand: string;
+  icon: 'messenger' | 'whatsapp' | 'viber' | 'phone' | 'email' | 'calendar';
+  /** Shown in the compact mobile bar as well as the desktop panel. */
+  onMobile?: boolean;
+  external?: boolean;
+};
+
+const channels: Channel[] = [
   {
     key: 'messenger',
     label: 'Messenger',
-    sub: 'Chat with the clinic',
+    sub: 'Chat on Facebook',
     href: site.contact.messengerHref,
     brand: '#0084FF',
     icon: 'messenger',
+    onMobile: true,
+    external: true,
   },
   {
     key: 'whatsapp',
     label: 'WhatsApp',
-    sub: site.contact.mobile,
+    sub: site.contact.whatsapp,
     href: site.contact.whatsappHref,
     brand: '#25D366',
     icon: 'whatsapp',
+    onMobile: true,
+    external: true,
+  },
+  {
+    key: 'viber',
+    label: 'Viber',
+    sub: site.contact.viber,
+    href: site.contact.viberHref,
+    brand: '#7360F2',
+    icon: 'viber',
+    onMobile: true,
   },
   {
     key: 'call',
     label: 'Call the clinic',
-    sub: site.contact.mobile,
+    sub: site.contact.mobileIntl,
     href: site.contact.mobileHref,
     brand: '#5B0F00',
     icon: 'phone',
+    onMobile: true,
   },
   {
-    key: 'book',
-    label: 'Book a Screening',
-    sub: site.screening.priceDisplay,
-    href: '/book',
+    key: 'email',
+    label: 'Email us',
+    sub: site.contact.email,
+    href: site.contact.emailHref,
     brand: '#AD9952',
-    icon: 'calendar',
+    icon: 'email',
   },
-] as const;
+];
+
+const mobileChannels = channels.filter((c) => c.onMobile);
 ---
 
 <!-- ============ Desktop: expanding FAB ============ -->
 <div class="pointer-events-none fixed bottom-6 right-6 z-40 hidden flex-col items-end gap-3 md:flex">
   <div
+    id="contact-fab-panel"
     data-fab-panel
     hidden
-    class="pointer-events-auto flex w-[19rem] flex-col gap-1.5 rounded-3xl border border-ink/10
+    class="pointer-events-auto flex w-[20rem] flex-col gap-1.5 rounded-3xl border border-ink/10
            bg-paper/95 p-2.5 shadow-[0_28px_70px_-24px_rgba(28,22,19,0.45)] backdrop-blur-xl"
   >
     <p class="px-3 pb-1 pt-2 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-ink-mute">
@@ -63,29 +96,15 @@ const channels = [
       channels.map((c) => (
         <a
           href={c.href}
-          target={c.href.startsWith('http') ? '_blank' : undefined}
-          rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+          target={c.external ? '_blank' : undefined}
+          rel={c.external ? 'noopener noreferrer' : undefined}
           class="group flex items-center gap-3.5 rounded-2xl px-3 py-2.5 transition-colors duration-300 hover:bg-ink/[0.045]"
         >
           <span
             class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white transition-transform duration-300 group-hover:scale-105"
             style={`background:${c.brand}`}
-            aria-hidden="true"
           >
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
-              {c.icon === 'messenger' && (
-                <path d="M12 2C6.3 2 2 6.2 2 11.7c0 3.1 1.4 5.9 3.7 7.7v3.8l3.4-1.9c.9.3 1.9.4 2.9.4 5.7 0 10-4.2 10-9.7S17.7 2 12 2zm1 13.1-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7-5.4 5.8z" />
-              )}
-              {c.icon === 'whatsapp' && (
-                <path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z" />
-              )}
-              {c.icon === 'phone' && (
-                <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z" />
-              )}
-              {c.icon === 'calendar' && (
-                <path d="M7 2v2h10V2h2v2h2a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h2V2h2zm13 8H4v10h16V10z" />
-              )}
-            </svg>
+            <ChannelIcon name={c.icon} size={19} knockout={c.brand} />
           </span>
           <span class="min-w-0">
             <span class="block text-[0.9rem] font-medium leading-tight text-ink">{c.label}</span>
@@ -95,8 +114,19 @@ const channels = [
       ))
     }
 
-    <p class="px-3 pb-1.5 pt-1 text-[0.72rem] leading-relaxed text-ink-mute">
-      Mon–Fri, 10:00 am – 7:00 pm. Messages outside clinic hours are answered the next working day.
+    <a
+      href={bookHref}
+      target={bookIsExternal ? '_blank' : undefined}
+      rel={bookIsExternal ? 'noopener noreferrer' : undefined}
+      class="mt-1.5 flex items-center justify-center gap-2.5 rounded-2xl bg-ox-600 px-3 py-3.5
+             text-[0.9rem] font-medium text-paper transition-colors duration-300 hover:bg-ox-500"
+    >
+      <ChannelIcon name="calendar" size={17} />
+      {site.booking.label} - {site.screening.priceDisplay}
+    </a>
+
+    <p class="px-3 pb-1.5 pt-2 text-[0.72rem] leading-relaxed text-ink-mute">
+      Mon - Fri, 10:00 am - 7:00 pm. Messages outside clinic hours are answered the next working day.
     </p>
   </div>
 
@@ -105,7 +135,7 @@ const channels = [
     data-fab-toggle
     aria-expanded="false"
     aria-controls="contact-fab-panel"
-    class="pointer-events-auto group relative flex h-15 items-center gap-3 rounded-full bg-ox-600 px-6 py-4
+    class="pointer-events-auto group relative flex items-center gap-3 rounded-full bg-ox-600 px-6 py-4
            text-paper shadow-[0_18px_44px_-14px_rgba(91,15,0,0.7)] transition-all duration-300
            hover:-translate-y-0.5 hover:bg-ox-500"
   >
@@ -116,15 +146,7 @@ const channels = [
       <span class="absolute inset-0 rounded-full border border-gold-500/60"></span>
     </span>
 
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      class="relative transition-transform duration-300 group-[[aria-expanded=true]]:rotate-90"
-      data-fab-icon
-    >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="relative">
       <path
         d="M12 2C6.5 2 2 6 2 11c0 2.6 1.3 5 3.3 6.6L4.6 22l4.3-2.2c1 .2 2 .3 3.1.3 5.5 0 10-4 10-9s-4.5-9-10-9z"
       ></path>
@@ -139,56 +161,32 @@ const channels = [
          shadow-[0_-8px_30px_-16px_rgba(28,22,19,0.4)] md:hidden"
   style="padding-bottom:env(safe-area-inset-bottom,0px)"
 >
-  <div class="grid grid-cols-4">
-    <a
-      href={site.contact.messengerHref}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="flex flex-col items-center gap-1 py-2.5 text-[0.65rem] font-medium text-ink-soft transition-colors active:bg-ink/5"
-    >
-      <svg width="21" height="21" viewBox="0 0 24 24" fill="#0084FF" aria-hidden="true">
-        <path
-          d="M12 2C6.3 2 2 6.2 2 11.7c0 3.1 1.4 5.9 3.7 7.7v3.8l3.4-1.9c.9.3 1.9.4 2.9.4 5.7 0 10-4.2 10-9.7S17.7 2 12 2zm1 13.1-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7-5.4 5.8z"
-        ></path>
-      </svg>
-      Messenger
-    </a>
+  <div class="grid grid-cols-5">
+    {
+      mobileChannels.map((c) => (
+        <a
+          href={c.href}
+          target={c.external ? '_blank' : undefined}
+          rel={c.external ? 'noopener noreferrer' : undefined}
+          aria-label={`${c.label} - ${c.sub}`}
+          class="flex flex-col items-center gap-1 py-2.5 text-[0.6rem] font-medium text-ink-soft transition-colors active:bg-ink/5"
+        >
+          <span style={`color:${c.brand}`}>
+            <ChannelIcon name={c.icon} size={20} knockout="#F7F4EE" />
+          </span>
+          {c.label === 'Call the clinic' ? 'Call' : c.label}
+        </a>
+      ))
+    }
 
     <a
-      href={site.contact.whatsappHref}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="flex flex-col items-center gap-1 py-2.5 text-[0.65rem] font-medium text-ink-soft transition-colors active:bg-ink/5"
+      href={bookHref}
+      target={bookIsExternal ? '_blank' : undefined}
+      rel={bookIsExternal ? 'noopener noreferrer' : undefined}
+      aria-label={`${site.booking.label} - ${site.screening.priceDisplay}`}
+      class="flex flex-col items-center gap-1 bg-ox-600 py-2.5 text-[0.6rem] font-medium text-paper transition-colors active:bg-ox-500"
     >
-      <svg width="21" height="21" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true">
-        <path
-          d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"
-        ></path>
-      </svg>
-      WhatsApp
-    </a>
-
-    <a
-      href={site.contact.mobileHref}
-      class="flex flex-col items-center gap-1 py-2.5 text-[0.65rem] font-medium text-ink-soft transition-colors active:bg-ink/5"
-    >
-      <svg width="21" height="21" viewBox="0 0 24 24" fill="#5B0F00" aria-hidden="true">
-        <path
-          d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"
-        ></path>
-      </svg>
-      Call
-    </a>
-
-    <a
-      href="/book"
-      class="flex flex-col items-center gap-1 bg-ox-600 py-2.5 text-[0.65rem] font-medium text-paper transition-colors active:bg-ox-500"
-    >
-      <svg width="21" height="21" viewBox="0 0 24 24" fill="#AD9952" aria-hidden="true">
-        <path
-          d="M7 2v2h10V2h2v2h2a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h2V2h2zm13 8H4v10h16V10z"
-        ></path>
-      </svg>
+      <span class="text-gold-400"><ChannelIcon name="calendar" size={20} /></span>
       Book
     </a>
   </div>
@@ -208,8 +206,6 @@ const channels = [
   const label = document.querySelector<HTMLElement>('[data-fab-label]');
 
   if (toggle && panel && label) {
-    panel.id = 'contact-fab-panel';
-
     const setOpen = (open: boolean) => {
       panel.hidden = !open;
       toggle.setAttribute('aria-expanded', String(open));

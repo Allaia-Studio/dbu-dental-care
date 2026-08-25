@@ -8,6 +8,7 @@ import { services } from '../data/services';
 import { faqs } from '../data/faqs';
 import { postsByDate } from '../data/posts';
 import { symptoms } from '../data/symptoms';
+import BookLink from '../components/BookLink.astro';
 
 const faqSchema = {
   '@type': 'FAQPage',
@@ -81,10 +82,10 @@ const latest = postsByDate.slice(0, 3);
         </p>
 
         <div class="mt-10 flex flex-wrap items-center gap-4" data-reveal style="--reveal-delay:220ms">
-          <a href="/book" class="btn-primary" data-magnetic="0.2">
+          <BookLink class="btn-primary" data-magnetic="0.2">
             Book a TMJ Screening
             <span class="text-paper/55">- {site.screening.priceDisplay}</span>
-          </a>
+          </BookLink>
           <a href="#self-check" class="btn-ghost">Take the 1-minute self-check</a>
         </div>
 
@@ -332,7 +333,7 @@ const latest = postsByDate.slice(0, 3);
           </div>
           <div class="border-l-2 border-gold-500/40 pl-5">
             <dt class="text-[0.72rem] uppercase tracking-[0.14em] text-ink-mute">When</dt>
-            <dd class="mt-1.5 text-ink">Monday – Friday<br />10:00 am – 7:00 pm</dd>
+            <dd class="mt-1.5 text-ink">Monday - Friday<br />10:00 am - 7:00 pm</dd>
           </div>
         </dl>
 

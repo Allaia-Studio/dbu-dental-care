@@ -21,17 +21,52 @@ export const site = {
   contact: {
     phone: '(02) 8553 57 86',
     phoneHref: 'tel:+63285535786',
+
+    /* One mobile line, confirmed by the client, carrying calls, WhatsApp and
+       Viber. Two display formats on purpose:
+         mobile     - exactly as the clinic publishes it (Contact Us, footer)
+         mobileIntl - international, for the floating chat/call buttons, since
+                      those are the channels reached from outside PH
+       Both dial the same number. */
     mobile: '(0917) 529 9649',
+    mobileIntl: '+63 917 529 9649',
     mobileHref: 'tel:+639175299649',
+
     email: 'support@dbudentalcare.com',
-    /* Derived from their published mobile number. VERIFY: is this line on WhatsApp? */
-    whatsapp: '639175299649',
+    emailHref:
+      'mailto:support@dbudentalcare.com' +
+      '?subject=' +
+      encodeURIComponent('TMJ Health Screening enquiry'),
+
+    whatsapp: '+63 917 529 9649',
     whatsappHref:
       'https://wa.me/639175299649?text=' +
       encodeURIComponent("Hi DBU Dental Care, I'd like to ask about the TMJ Health Screening."),
+
+    /* Viber deep link. The + must stay percent-encoded or the handoff fails. */
+    viber: '+63 917 529 9649',
+    viberHref: 'viber://chat?number=%2B639175299649',
+
     /* Verified: facebook.com/DBUDentalCare */
     facebook: 'https://www.facebook.com/DBUDentalCare/',
     messengerHref: 'https://m.me/DBUDentalCare',
+  },
+
+  /**
+   * Where every "Book" button on the site points.
+   *
+   * Defaults to the on-site request page. To hand booking over to a real
+   * system, put the full URL here and nothing else needs touching - the
+   * floating buttons, header, CTAs and blog sidebar all read this value, and
+   * anything starting with http opens in a new tab automatically.
+   *
+   *   Cal.com   https://cal.com/dbu-dental-care/tmj-screening
+   *   Fresha    https://www.fresha.com/book-now/...
+   *   Calendly  https://calendly.com/dbudentalcare/tmj-screening
+   */
+  booking: {
+    url: '/book',
+    label: 'Book a Screening',
   },
 
   address: {

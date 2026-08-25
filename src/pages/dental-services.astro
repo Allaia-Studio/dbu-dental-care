@@ -4,6 +4,7 @@ import PageHero from '../components/PageHero.astro';
 import ClosingCTA from '../components/ClosingCTA.astro';
 import { site } from '../data/site';
 import { services } from '../data/services';
+import BookLink from '../components/BookLink.astro';
 
 const serviceSchema = services.map((s) => ({
   '@type': 'Service',
@@ -51,9 +52,9 @@ const serviceSchema = services.map((s) => ({
                 <p class="mt-4 leading-relaxed text-ink-soft">{s.detail}</p>
 
                 <div class="mt-8 flex flex-wrap items-center gap-4">
-                  <a href="/book" class="btn-primary">
+                  <BookLink class="btn-primary">
                     {s.featured ? 'Book this' : 'Ask about this'}
-                  </a>
+                  </BookLink>
                   {s.price && (
                     <span class="font-display text-2xl text-ox-600">{s.price}</span>
                   )}
@@ -103,7 +104,7 @@ const serviceSchema = services.map((s) => ({
         message the clinic and someone from the team will answer.
       </p>
       <div class="mt-6 flex flex-wrap gap-4">
-        <a href="/book" class="btn-primary">Book a screening</a>
+        <BookLink class="btn-primary">Book a screening</BookLink>
         <a
           href={site.contact.messengerHref}
           target="_blank"

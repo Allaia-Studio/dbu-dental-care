@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import { site } from '../data/site';
+import BookLink from '../components/BookLink.astro';
 
 const mapQuery = encodeURIComponent(site.address.mapsQuery);
 ---
@@ -34,6 +35,7 @@ const mapQuery = encodeURIComponent(site.address.mapsQuery);
               >
                 {site.contact.mobile}
               </a>
+              <span class="ml-3 text-[0.85rem] text-ink-mute">WhatsApp &amp; Viber</span>
             </dd>
           </div>
 
@@ -110,7 +112,8 @@ const mapQuery = encodeURIComponent(site.address.mapsQuery);
           >
             WhatsApp
           </a>
-          <a href="/book" class="btn-ghost">Book a screening</a>
+          <a href={site.contact.viberHref} class="btn-ghost">Viber</a>
+          <BookLink class="btn-ghost">Book a screening</BookLink>
         </div>
       </div>
 

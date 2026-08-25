@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import ClosingCTA from '../../components/ClosingCTA.astro';
 import { posts, postsByDate } from '../../data/posts';
 import { site, doctor } from '../../data/site';
+import BookLink from '../../components/BookLink.astro';
 
 export function getStaticPaths() {
   return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
@@ -137,7 +138,7 @@ const published = new Date(post.published).toLocaleDateString('en-GB', {
             </p>
             <div class="mt-6 flex flex-wrap gap-3">
               <a href="/tmj-self-check" class="btn-primary">Take the self-check</a>
-              <a href="/book" class="btn-ghost">Book a screening</a>
+              <BookLink class="btn-ghost">Book a screening</BookLink>
             </div>
           </div>
         </div>
@@ -152,7 +153,7 @@ const published = new Date(post.published).toLocaleDateString('en-GB', {
             <p class="mt-2 text-[0.9rem] leading-relaxed text-ink-mute">
               {site.screening.duration} diagnostic · ages {site.screening.minAge}+
             </p>
-            <a href="/book" class="btn-primary mt-6 w-full !px-5 text-[0.85rem]">Book now</a>
+            <BookLink class="btn-primary mt-6 w-full !px-5 text-[0.85rem]">Book now</BookLink>
             <a
               href={site.contact.messengerHref}
               target="_blank"

@@ -1,6 +1,7 @@
 ---
 import { symptoms, maxScore } from '../data/symptoms';
 import { site } from '../data/site';
+import BookLink from './BookLink.astro';
 
 /**
  * The interactive core of the site.
@@ -245,9 +246,9 @@ const hotspots: Record<string, { x: number; y: number; label: string }> = {
           <p class="mt-3 leading-relaxed text-paper/60" data-result-body></p>
 
           <div class="mt-6 flex flex-wrap gap-3" data-result-actions hidden>
-            <a href="/book" class="btn-gold" data-magnetic="0.18">
+            <BookLink class="btn-gold" data-magnetic="0.18">
               <span data-result-cta>Book the TMJ Health Screening</span>
-            </a>
+            </BookLink>
             <a
               href={site.contact.messengerHref}
               target="_blank"
