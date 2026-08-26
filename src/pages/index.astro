@@ -44,58 +44,81 @@ const mapQuery = encodeURIComponent(site.address.mapsQuery);
   title={`TMJ & Jaw Pain Specialist in Makati | ${site.name}`}
   description="Jaw pain, clicking, headaches or ear pain no one can explain? DBU Dental Care, Makati specialises in TMJ. 15-minute screening, Php 3,800."
   schema={[faqSchema, screeningSchema]}
-  darkHero
 >
   <!-- ==================== HERO ==================== -->
-  <section class="relative isolate overflow-hidden bg-ink text-paper">
-    <!-- Moving ground: a clinician reading a panoramic X-ray. Muted, looping and
-         decorative, so it carries no meaning a screen reader needs. The poster
-         is the first graded frame, so there is no flash before playback. -->
-    <div class="absolute inset-0" aria-hidden="true">
+  <section class="relative isolate overflow-hidden bg-paper">
+    <!-- Video ground. Light hero: the footage stays bright and the scrim is
+         paper fading to clear, so the copy sits on paper rather than on a
+         darkened photograph. -->
+    <div class="absolute inset-0 lg:left-auto lg:w-[56%]" aria-hidden="true">
       <video
         data-hero-video
-        class="h-full w-full object-cover object-[58%_center]"
+        class="h-full w-full object-cover object-[58%_30%]"
         poster="/video/hero-xray-poster.webp"
         autoplay
         muted
         loop
         playsinline
         preload="metadata"
-        tabindex="-1"
       >
         <source src="/video/hero-xray.webm" type="video/webm" />
         <source src="/video/hero-xray.mp4" type="video/mp4" />
       </video>
 
-      <!-- Scrims: the copy sits on deep ink, the window light stays on the right -->
-      <div class="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/60 to-ink/95 lg:hidden"></div>
+      <!-- Mobile: paper wash top and bottom so the type reads -->
       <div
-        class="absolute inset-0 hidden lg:block"
-        style="background:linear-gradient(100deg, rgba(28,22,19,0.94) 0%, rgba(28,22,19,0.88) 30%, rgba(28,22,19,0.7) 50%, rgba(28,22,19,0.4) 72%, rgba(28,22,19,0.14) 100%)"
+        class="absolute inset-0 lg:hidden"
+        style="background:linear-gradient(180deg, rgba(247,244,238,0.94) 0%, rgba(247,244,238,0.80) 42%, rgba(247,244,238,0.92) 100%)"
       >
       </div>
-      <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink to-transparent"></div>
-      <div class="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-ink/90 to-transparent"></div>
+
+      <!-- Desktop: paper on the copy side, clear over the footage -->
+      <div
+        class="absolute inset-0 hidden lg:block"
+        style="background:linear-gradient(100deg, var(--color-paper) 0%, var(--color-paper) 16%, rgba(247,244,238,0.86) 34%, rgba(247,244,238,0.35) 58%, rgba(247,244,238,0) 82%)"
+      >
+      </div>
+      <div
+        class="absolute inset-x-0 bottom-0 hidden h-24 lg:block"
+        style="background:linear-gradient(to top, var(--color-paper), rgba(247,244,238,0))"
+      >
+      </div>
     </div>
 
-    <div class="wrap-wide relative flex min-h-[42rem] flex-col justify-center py-24 lg:min-h-[46rem] lg:py-28">
+    <!-- The logo's target rings, landed on the jaw in frame -->
+    <div class="pointer-events-none absolute hidden lg:block" style="left:72%; top:40%" aria-hidden="true">
+      <span class="ring-pulse relative block h-24 w-24">
+        <span class="absolute inset-0 rounded-full border border-signal/80"></span>
+        <span class="absolute inset-0 rounded-full border border-signal/80"></span>
+        <span class="absolute inset-0 rounded-full border border-signal/80"></span>
+      </span>
+      <span class="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal"></span>
+      <span
+        class="absolute left-[calc(50%+3.6rem)] top-1/2 w-44 -translate-y-1/2 border-l border-signal/50 pl-3
+               text-[0.68rem] uppercase tracking-[0.16em] leading-relaxed text-ink-soft"
+      >
+        Temporomandibular joint
+      </span>
+    </div>
+
+    <div class="wrap-wide relative flex min-h-[40rem] flex-col justify-center py-24 lg:min-h-[44rem] lg:py-28">
       <div class="max-w-[38rem] lg:max-w-[44rem]">
-        <span class="eyebrow !text-gold-400" data-reveal>
+        <span class="eyebrow" data-reveal>
           <span class="h-px w-10 bg-gold-500"></span>
           {site.positioning}
         </span>
 
         <h1
-          class="mt-8 text-[3.1rem] leading-[0.94] tracking-[-0.03em] text-paper sm:text-[4.4rem] lg:text-[5.5rem]"
+          class="mt-8 text-[3.1rem] leading-[0.96] tracking-[-0.02em] text-ink sm:text-[4.4rem] lg:text-[5.5rem]"
           data-reveal
           style="--reveal-delay:60ms"
         >
           You don't have to<br />
-          <span class="italic text-gold-400">live with</span> TMJ pain.
+          <span class="italic text-gold-600">live with</span> TMJ pain.
         </h1>
 
         <p
-          class="mt-9 max-w-lg text-lg leading-relaxed text-paper/70 sm:text-xl"
+          class="mt-9 max-w-lg text-lg leading-relaxed text-ink-soft sm:text-xl"
           data-reveal
           style="--reveal-delay:140ms"
         >
@@ -104,45 +127,45 @@ const mapQuery = encodeURIComponent(site.address.mapsQuery);
         </p>
 
         <div class="mt-11 flex flex-wrap items-center gap-4" data-reveal style="--reveal-delay:220ms">
-          <BookLink class="btn-gold" data-magnetic="0.2">
+          <BookLink class="btn-primary" data-magnetic="0.2">
             Book a TMJ Screening
-            <span class="text-white/70">- {site.screening.priceDisplay}</span>
+            <span class="text-paper/60">- {site.screening.priceDisplay}</span>
           </BookLink>
-          <a href="#self-check" class="btn-ghost-light">Take the 1-minute self-check</a>
+          <a href="#self-check" class="btn-ghost">Take the 1-minute self-check</a>
         </div>
 
         <dl
-          class="mt-16 grid max-w-xl grid-cols-3 gap-8 border-t border-paper/15 pt-9"
+          class="mt-16 grid max-w-xl grid-cols-3 gap-8 border-t border-ink/12 pt-9"
           data-reveal
           style="--reveal-delay:300ms"
         >
           <div>
-            <dt class="text-[0.68rem] uppercase tracking-[0.16em] text-paper/45">Program</dt>
-            <dd class="mt-2 font-display text-3xl text-gold-400 sm:text-4xl">
+            <dt class="text-[0.68rem] uppercase tracking-[0.16em] text-ink-mute">Program</dt>
+            <dd class="mt-2 font-display text-3xl text-ox-600 sm:text-4xl">
               {doctor.yearsCurating} yrs
             </dd>
-            <dd class="mt-0.5 text-[0.82rem] text-paper/55">in the making</dd>
+            <dd class="mt-0.5 text-[0.82rem] text-ink-mute">in the making</dd>
           </div>
           <div>
-            <dt class="text-[0.68rem] uppercase tracking-[0.16em] text-paper/45">Screening</dt>
-            <dd class="mt-2 font-display text-3xl text-gold-400 sm:text-4xl">15 min</dd>
-            <dd class="mt-0.5 text-[0.82rem] text-paper/55">structured diagnostic</dd>
+            <dt class="text-[0.68rem] uppercase tracking-[0.16em] text-ink-mute">Screening</dt>
+            <dd class="mt-2 font-display text-3xl text-ox-600 sm:text-4xl">15 min</dd>
+            <dd class="mt-0.5 text-[0.82rem] text-ink-mute">structured diagnostic</dd>
           </div>
           <div>
-            <dt class="text-[0.68rem] uppercase tracking-[0.16em] text-paper/45">Treatment</dt>
-            <dd class="mt-2 font-display text-3xl text-gold-400 sm:text-4xl">Non-surgical</dd>
-            <dd class="mt-0.5 text-[0.82rem] text-paper/55">and personalised</dd>
+            <dt class="text-[0.68rem] uppercase tracking-[0.16em] text-ink-mute">Treatment</dt>
+            <dd class="mt-2 font-display text-3xl text-ox-600 sm:text-4xl">Non-surgical</dd>
+            <dd class="mt-0.5 text-[0.82rem] text-ink-mute">and personalised</dd>
           </div>
         </dl>
       </div>
     </div>
 
-    <!-- Symptom marquee, sitting on the dark -->
-    <div class="relative overflow-hidden border-t border-paper/10 bg-ink py-4">
+    <!-- Symptom marquee -->
+    <div class="relative overflow-hidden border-y border-ink/[0.08] bg-paper-warm py-4">
       <div class="marquee-track flex w-max gap-3">
         {
           [...symptoms, ...symptoms].map((s) => (
-            <span class="flex shrink-0 items-center gap-3 rounded-full border border-paper/15 px-5 py-2 text-[0.85rem] text-paper/70">
+            <span class="flex shrink-0 items-center gap-3 rounded-full border border-ink/[0.09] bg-white/70 px-5 py-2 text-[0.85rem] text-ink-soft">
               <span class="h-1.5 w-1.5 rounded-full bg-signal" aria-hidden="true" />
               {s.short}
             </span>
